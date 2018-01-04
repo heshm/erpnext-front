@@ -1,0 +1,80 @@
+/*
+    login
+*/
+.login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: #f3f3f3;
+    .login-form{
+        width: 320px;
+        height: 340px;
+        padding: 36px;
+        box-shadow: 0 0 100px rgba(0,0,0,.08);
+        background: #fff;
+        .login-logo{
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            cursor: pointer;
+            margin-bottom: 24px;
+            span {
+                vertical-align: text-bottom;
+                font-size: 16px;
+                display: inline-block;
+            }
+        }
+        .login-form-button{
+            width: 100%;
+        }
+    }
+}
+
+/*
+    layout
+*/
+.main {
+    height: 100%;
+}
+.ant-layout{
+    height: 100%;
+    position: relative;
+    .logo{
+        height: 32px;
+        background: #333;
+        border-radius: 6px;
+        margin: 16px;
+    }
+    .content {
+        margin: 10px 10px;
+        padding: 10px 10px;
+        background: #fff;
+        overflow: initial;
+        height: auto;
+    }
+    .footer {
+        height: 48px;
+        text-align: center;
+        font-size: 12px;
+        padding: 12px 50px;
+        color: #999;
+        background: #fff;
+        width: 100%;
+    }
+}
+.table-title {
+    margin-bottom: 16px;
+    .table-title-operations {
+        float: right;
+    }
+    .table-title-operations > button {
+        margin-right: 8px;
+    }
+}
+.pull-right{
+    float: right;
+}
+.color-danger{
+    color: #a94442;
+}

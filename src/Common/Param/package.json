@@ -1,0 +1,6 @@
+{
+  "name": "Param",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Param.js"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Crm",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Crm.js"
+}

@@ -1,0 +1,55 @@
+
+.header{
+  height: 47px;
+  background-color: #fff;
+  padding: 0px;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+
+  .right-warpper {
+    display: flex;
+    padding-right: 16px;
+    z-index: 900;
+  }
+
+  .button {
+    width: 47px;
+    height: 47px;
+    line-height: 47px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+
+    &:hover {
+      color: #108ee9;
+      background-color: fade(#108ee9, 15%);
+    }
+  }
+}
+.ant-menu-submenu-horizontal{
+  z-index: 0;
+  .ant-menu{
+    min-width: 120px;
+    left: -50px;
+  }
+}
+.popovermenu {
+  width: 200px;
+  margin-left: 6px;
+  .ant-popover-inner-content {
+    padding: 0;
+    .ant-menu-inline .ant-menu-item,
+    .ant-menu-vertical .ant-menu-item {
+      border-right: 0;
+      height: 48px;
+      line-height: 48px;
+    }
+    .ant-menu-inline .ant-menu-item-selected,
+    .ant-menu-inline .ant-menu-selected {
+      border-right: 0;
+    }
+  }
+}
+
