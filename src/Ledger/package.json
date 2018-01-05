@@ -1,0 +1,6 @@
+{
+  "name": "Ledger",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Ledger.js"
+}

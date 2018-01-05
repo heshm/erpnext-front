@@ -1,0 +1,36 @@
+.content {
+  height: 400px;
+  overflow: auto;
+}
+.icons-list {
+  margin: 40px 0;
+  list-style: none;
+  overflow: hidden;
+
+  >li {
+    float: left;
+    width: 10%;
+    text-align: center;
+    list-style: none;
+    cursor: pointer;
+    height: 50px;
+    transition: all .3s;
+    position: relative;
+    margin: 3px 0;
+    border-radius: 4px;
+    background-color: #fff;
+    overflow: hidden;
+    padding: 10px 0 0;
+    font-size: 20px;
+  }
+  >li:hover{
+    background-color: #108ee9;
+    color: #fff;
+    font-size: 25px;
+    text-decoration:none
+  }
+  .active{
+    background-color: #108ee9;
+    color: #fff;
+  }
+}

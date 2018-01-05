@@ -1,5 +1,6 @@
 import React,{PureComponent} from 'react';
 import { Table, Popconfirm, Icon } from 'antd';
+import { Link } from 'react-router-dom';
 import {getAllMenu,deleteMenu} from '../services/DevMenu';
 
 class DevMenu extends PureComponent{
@@ -29,30 +30,27 @@ class DevMenu extends PureComponent{
 		key: 'action',
 		render: (text, record) => (
 			<span>
-      <a onClick={(e) => {
-	      e.preventDefault();
+				<Link to={`/developer/menu/${record.parentMenu.id}/${record.id}`} >修改</Link>
+      	<span className="ant-divider" />
+      	<a onClick={(e) => {
+	      	e.preventDefault();
 
-      }}>修改</a>
-      <span className="ant-divider" />
-      <a onClick={(e) => {
-	      e.preventDefault();
-
-      }}>添加下级</a>
-      <span className="ant-divider" />
-      <Popconfirm placement="bottom"
-                  title={`你确定删除该条记录`}
-                  okText="确定"
-                  cancelText="取消"
-                  onConfirm={
-	                  (e) => {
-		                  deleteMenu(record.id).then(() => {
-		                  	this.fetch();
-		                  })
-	                  }
-                  }
-      >
+      	}}>添加下级</a>
+     	 	<span className="ant-divider" />
+      	<Popconfirm placement="bottom"
+                  	title={`你确定删除该条记录`}
+                  	okText="确定"
+                  	cancelText="取消"
+                  	onConfirm={
+	                  	(e) => {
+		                  	deleteMenu(record.id).then(() => {
+		                  		this.fetch();
+		                  	})
+	                  	}
+                  	}
+      	>
         <a href="#" className="color-danger">删除</a>
-      </Popconfirm>
+      	</Popconfirm>
     </span>
 		)
 	}];
