@@ -1,22 +1,17 @@
 import React,{ PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { Layout  } from 'antd';
 import {Aside,BreadNav,LayoutHeader,Setting} from './Layout';
 import Loader from './components/Loader/';
-import {isLogin} from './utils';
 import { loadUserInfo, loadAppInfo } from './actions';
 import Common from './Common/';
 import Developer from './Developer/';
 import Ledger from './Ledger/';
+import Stock from './Stock/';
 
 const { Content, Footer } = Layout;
 class Main extends PureComponent{
-	componentWillMount(){
-		if(!isLogin){
-			this.props.history.push('/login')
-		}
-	}
 	componentDidMount(){
 		const { dispatch } = this.props;
 		dispatch(loadUserInfo());
@@ -37,6 +32,7 @@ class Main extends PureComponent{
 						<Switch>
 							<Route path="/common" component={Common}/>
 							<Route path="/ledger" component={Ledger}/>
+							<Route path="/stock" component={Stock}/>
 							<Route path="/developer" component={Developer}/>
 						</Switch>
 					</Content>
@@ -50,4 +46,4 @@ class Main extends PureComponent{
 	}
 }
 
-export default connect(({app}) => ({app}))(Main);
+export default withRouter(connect(({app}) => ({app}))(Main));

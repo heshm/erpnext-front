@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Col } from 'antd';
-import styles from './index.less';
+import styles from './index.module.less';
 import responsive from './responsive';
 
 const Description = ({ term, column, className, children, ...restProps }) => {

@@ -32,10 +32,7 @@ class DevMenu extends PureComponent{
 			<span>
 				<Link to={`/developer/menu/${record.parentMenu.id}/${record.id}`} >修改</Link>
       	<span className="ant-divider" />
-      	<a onClick={(e) => {
-	      	e.preventDefault();
-
-      	}}>添加下级</a>
+      	<Link to={`/developer/menu/${record.id}`} >添加下级</Link>
      	 	<span className="ant-divider" />
       	<Popconfirm placement="bottom"
                   	title={`你确定删除该条记录`}
@@ -49,7 +46,7 @@ class DevMenu extends PureComponent{
 	                  	}
                   	}
       	>
-        <a href="#" className="color-danger">删除</a>
+        <a className="color-danger">删除</a>
       	</Popconfirm>
     </span>
 		)

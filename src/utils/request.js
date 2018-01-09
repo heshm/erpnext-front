@@ -47,8 +47,6 @@ export default function request(url, options){
 		}
 	}
 
-	console.log(newOptions)
-
 	return fetch(url, newOptions)
 		.then(checkStatus)
 		.then(response => response.json())

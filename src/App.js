@@ -3,7 +3,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 
 import * as reducers from './reducers';
@@ -11,6 +11,7 @@ import './App.less';
 
 import Main from './Main';
 import Login from './Login';
+import {isLogin} from './utils';
 
 const history = createHistory();
 const middleware = routerMiddleware(history);
@@ -32,7 +33,13 @@ class App extends Component {
 		    <ConnectedRouter history={history}>
 			    <Switch>
 						<Route exact path="/login" component={Login}/>
-				    <Route path="/" component={Main}/>
+				    <Route path="/" render={() => (
+							isLogin() ? (
+								<Main/>
+							):(
+								<Redirect to="/login"/>
+							)
+						)}/>
 			    </Switch>
 		    </ConnectedRouter>
 	    </Provider>

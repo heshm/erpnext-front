@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ PureComponent } from 'react';
 import { Modal, Icon } from 'antd';
 import './IconSelect.less';
 
@@ -47,87 +47,92 @@ const other_icons = [
   'github', 'aliwangwang', 'aliwangwang-o', 'dingding', 'dingding-o'
 ]
 
-const IconSelect = ({
-                      iconModal,
-                      onCancle,
-                      icon,
-                      onSelect,
-                      onOk
-                    }) => {
-  return (
-    <Modal
-      title="图标选择"
-      visible={iconModal}
-      width={800}
-      onCancel={onCancle}
-      onOk={onOk}
-    >
-      <div className="content">
-        <h3>方向图标</h3>
-        <ul className="icons-list">
-          {
-            direction_icons.map(item => (
-              <li className={item === icon ? 'active' : ''}
-                  key={item}
-                  onClick={() => {
-                    onSelect(item)
-                  }}
-              >
-                <Icon type={item} className="icon"/>
-              </li>
-            ))
-          }
-        </ul>
-        <h3>提示性建议图标</h3>
-        <ul className="icons-list">
-          {
-            suggestion_icons.map(item => (
-              <li className={item === icon ? 'active' : ''}
-                  key={item}
-                  onClick={() => {
-                    onSelect(item)
-                  }}
-              >
-                <Icon type={item} className="icon"/>
-              </li>
-            ))
-          }
-        </ul>
-        <h3>网站通用图标</h3>
-        <ul className="icons-list">
-          {
-            web_icons.map(item => (
-              <li className={item === icon ? 'active' : ''}
-                  key={item}
-                  onClick={() => {
-                    onSelect(item)
-                  }}
-              >
-                <Icon type={item} className="icon"/>
-              </li>
-            ))
-          }
-        </ul>
-        <h3>品牌和标识</h3>
-        <ul className="icons-list">
-          {
-            other_icons.map(item => (
-              <li className={item === icon ? 'active' : ''}
-                  key={item}
-                  onClick={() => {
-                    onSelect(item)
-                  }}
-              >
-                <Icon type={item} className="icon"/>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </Modal>
-  )
+class IconSelect extends PureComponent{
+  state = {
+    icon: ''
+  }
+  onSelect = (icon) => {
+    this.setState({icon})
+  }
+	onOk = () => {
+		const {selectIcon} = this.props;
+		selectIcon(this.state.icon);
+  }
+  render(){
+    const {iconModal,onCancle} = this.props;
+    return(
+      <Modal
+        title="图标选择"
+        visible={iconModal}
+        width={800}
+        onCancel={onCancle}
+        onOk={this.onOk}
+      >
+        <div className="content">
+          <h3>方向图标</h3>
+          <ul className="icons-list">
+						{
+							direction_icons.map(item => (
+                <li className={item === this.state.icon ? 'active' : ''}
+                    key={item}
+                    onClick={() => {
+											this.onSelect(item)
+										}}
+                >
+                  <Icon type={item} className="icon"/>
+                </li>
+							))
+						}
+          </ul>
+          <h3>提示性建议图标</h3>
+          <ul className="icons-list">
+						{
+							suggestion_icons.map(item => (
+                <li className={item === this.state.icon ? 'active' : ''}
+                    key={item}
+                    onClick={() => {
+											this.onSelect(item)
+										}}
+                >
+                  <Icon type={item} className="icon"/>
+                </li>
+							))
+						}
+          </ul>
+          <h3>网站通用图标</h3>
+          <ul className="icons-list">
+						{
+							web_icons.map(item => (
+                <li className={item === this.state.icon ? 'active' : ''}
+                    key={item}
+                    onClick={() => {
+											this.onSelect(item)
+										}}
+                >
+                  <Icon type={item} className="icon"/>
+                </li>
+							))
+						}
+          </ul>
+          <h3>品牌和标识</h3>
+          <ul className="icons-list">
+						{
+							other_icons.map(item => (
+                <li className={item === this.state.icon ? 'active' : ''}
+                    key={item}
+                    onClick={() => {
+											this.onSelect(item)
+										}}
+                >
+                  <Icon type={item} className="icon"/>
+                </li>
+							))
+						}
+          </ul>
+        </div>
+      </Modal>
+    )
+  }
 }
-
-
 
 export default IconSelect;
