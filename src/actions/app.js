@@ -3,6 +3,8 @@ import {fetchUser,fetchAppInfo,fetchMenu} from '../services/Main'
 
 export const COLLAPSE_MENU = 'COLLAPSE_MENU';
 
+export const RESIZE_WINDOW = 'RESIZE_WINDOW';
+
 export const loadUserInfo = () => (dispatch, getState) => {
 	dispatch({type: FETCH_START})
 	fetchUser().then(userInfo => {

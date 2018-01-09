@@ -1,6 +1,6 @@
 import
 {
-	COLLAPSE_MENU,FETCH_START,UPDATE_STATE
+	COLLAPSE_MENU,FETCH_START,UPDATE_STATE,RESIZE_WINDOW
 } from '../actions'
 
 const initialState = {
@@ -30,6 +30,11 @@ const app = (state = initialState,action) => {
 				...state,
 				loading: false,
 				...payload
+			}
+		case RESIZE_WINDOW:
+			console.log('window size changed')
+			return {
+				...state
 			}
 		default:
 			return state

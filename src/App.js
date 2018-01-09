@@ -7,6 +7,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 
 import * as reducers from './reducers';
+import {RESIZE_WINDOW} from './actions';
 import './App.less';
 
 import Main from './Main';
@@ -25,6 +26,15 @@ const store = createStore(
 	}),
 	composeEnhancers(applyMiddleware(middleware,thunk))
 )
+store.subscribe(() => {
+	let tid
+	window.onresize = () => {
+		clearTimeout(tid)
+		tid = setTimeout(() => {
+			store.dispatch({type: RESIZE_WINDOW})
+		}, 300)
+	}
+})
 
 class App extends Component {
   render() {
