@@ -14,7 +14,7 @@ const formItemLayout = {
 }
 const getSelectOption = (permList) => {
 	return permList.map(item => {
-		return <Select.Option value={item.permissionId}>{item.permissionName}</Select.Option>
+		return <Select.Option key={item.permissionId} value={item.permissionId}>{item.permissionName}</Select.Option>
 	})
 }
 class PermissionForm extends PureComponent{
@@ -28,13 +28,20 @@ class PermissionForm extends PureComponent{
 			this.setState({formItemVisible: true})
 		}
 	}
+	onOk = () => {
+		this.props.form.validateFields((errors, values) => {
+			if (!errors){
+				this.props.createPerm(values)
+			}
+		})
+	}
 	render(){
 		const {getFieldDecorator} = this.props.form;
-		console.log(this.props.permList)
 		return (
 			<Modal title="新增权限"
 						 visible={this.props.visible}
 						 onCancel={this.props.hideForm}
+						 onOk={this.onOk}
 			>
 				<Form layout="horizontal">
 					<FormItem label="权限ID" {...formItemLayout}>
@@ -84,7 +91,8 @@ class PermissionForm extends PureComponent{
 						{getFieldDecorator('isFriendly', {
 							rules: [
 								{ required: true, message: '必须选择!' }
-							]
+							],
+							initialValue: true
 						})(
 							<Radio.Group onChange={this.onChange}>
 								<Radio value={true}>是</Radio>
@@ -95,7 +103,7 @@ class PermissionForm extends PureComponent{
 					{
 						this.state.formItemVisible ? (
 							<FormItem label="上级权限" {...formItemLayout}>
-								{getFieldDecorator('parentId', {
+								{getFieldDecorator('parentPermissionId', {
 									rules: [
 										{ required: true, message: '必须选择!' }
 									]

@@ -1,7 +1,7 @@
 import React,{PureComponent} from 'react';
 import { Button, Table } from 'antd';
 import PermissionForm from './PermissionForm';
-import {list} from '../services/Permisson';
+import {list,create} from '../services/Permisson';
 
 const getParentPerm = (permList) => {
 	return permList.map(item => {
@@ -23,7 +23,8 @@ class PermissionList extends PureComponent {
 		list().then(({data}) => {
 			this.setState({
 				loading: false,
-				permList: data
+				permList: data,
+				permForm: false
 			})
 		})
 	}
@@ -32,6 +33,11 @@ class PermissionList extends PureComponent {
 	}
 	hideForm = () => {
 		this.setState({permForm: false})
+	}
+	createPerm = (perm) => {
+		create(perm).then(() => {
+			this.fetch();
+		})
 	}
 	componentDidMount(){
 		this.fetch();
@@ -77,6 +83,7 @@ class PermissionList extends PureComponent {
 				<PermissionForm visible={this.state.permForm}
 												hideForm={this.hideForm}
 												permList={getParentPerm(this.state.permList)}
+												createPerm={this.createPerm}
 				/>
 			</div>
 		)

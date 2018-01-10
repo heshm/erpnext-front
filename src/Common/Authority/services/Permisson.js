@@ -5,3 +5,10 @@ export async function list(){
 		method: 'get'
 	});
 }
+
+export async function create(perm){
+	return request('/api/common/authority/perm/create',{
+		method: 'post',
+		body: perm
+	});
+}
