@@ -75,7 +75,6 @@ class MenuForm extends PureComponent{
 		}
 	}
   render(){
-		console.log(this.props)
     const {getFieldDecorator} = this.props.form;
     const iconSelectProps = {
 			iconModal: this.state.iconModal,

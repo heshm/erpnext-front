@@ -45,6 +45,7 @@ class MenuNav extends Component {
         mode="inline"
         openKeys={this.state.openKeys}
         onOpenChange={this.onOpenChange}
+        onClick={this.props.clickMenu}
       >
         <Menu.Item key="index">
           <Link to="/common">

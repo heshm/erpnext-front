@@ -1,12 +1,14 @@
 import
 {
-	COLLAPSE_MENU,FETCH_START,UPDATE_STATE,RESIZE_WINDOW
+	COLLAPSE_MENU,FETCH_START,UPDATE_STATE,RESIZE_WINDOW,POPOVER_MENU
 } from '../actions'
 
 const initialState = {
 	appId: '',
 	loading: false,
 	menuCollapsed: false,
+	popoverMenuVisible: false,
+	smallScreen: document.body.clientWidth < 700,
 	userInfo: {},
 	appList: [],
 	menuItem: []
@@ -32,9 +34,15 @@ const app = (state = initialState,action) => {
 				...payload
 			}
 		case RESIZE_WINDOW:
-			console.log('window size changed')
+			const smallScreen = document.body.clientWidth < 700
 			return {
-				...state
+				...state,
+				smallScreen
+			}
+		case POPOVER_MENU:
+			return {
+				...state,
+				popoverMenuVisible: !state.popoverMenuVisible
 			}
 		default:
 			return state

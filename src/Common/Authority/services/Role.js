@@ -9,7 +9,7 @@ export async function list(){
 export async function create(role){
   return request('/api/common/authority/role/create',{
     method: 'post',
-    body: JSON.stringify(role)
+    body: role
   });
 }
 
@@ -28,6 +28,6 @@ export async function user_role(userId) {
 export async function update(userRole) {
   return request('/api/common/authority/role/update',{
     method: 'put',
-    body: JSON.stringify(userRole)
+    body: userRole
   });
 }

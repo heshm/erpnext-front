@@ -12,7 +12,7 @@ class User extends PureComponent{
             <UserList />
           </TabPane>
           <TabPane tab="用户添加" key="modify">
-            用户列表
+            用户新增
           </TabPane>
         </Tabs>
       </div>

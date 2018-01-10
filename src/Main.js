@@ -19,12 +19,12 @@ class Main extends PureComponent{
 	}
 
 	render(){
-		const {menuCollapsed,menuItem} = this.props.app;
+		const {menuCollapsed,menuItem,smallScreen} = this.props.app;
 		const asideProps = {menuCollapsed,menuItem}
 		return(
 			<Layout className="ant-layout-has-sider">
 				<Loader fullScreen spinning={this.props.app.loading} />
-				<Aside {...asideProps} />
+				{smallScreen ? <div/> : <Aside {...asideProps} />}
 				<Layout>
 					<LayoutHeader />
 					<BreadNav />

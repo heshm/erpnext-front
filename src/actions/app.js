@@ -2,7 +2,7 @@ import {FETCH_START,UPDATE_STATE} from '../actions';
 import {fetchUser,fetchAppInfo,fetchMenu} from '../services/Main'
 
 export const COLLAPSE_MENU = 'COLLAPSE_MENU';
-
+export const POPOVER_MENU = 'POPOVER_MENU';
 export const RESIZE_WINDOW = 'RESIZE_WINDOW';
 
 export const loadUserInfo = () => (dispatch, getState) => {

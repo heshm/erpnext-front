@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Layout, Icon, Menu, Badge, Popover } from 'antd';
 import MenuNav from './MenuNav';
-import {COLLAPSE_MENU} from '../actions';
+import {COLLAPSE_MENU,POPOVER_MENU} from '../actions';
 import './LayoutHeader.less';
 
 const { Header } = Layout;
@@ -12,20 +12,24 @@ const MenuItemGroup = Menu.ItemGroup;
 
 
 const LayoutHeader = ({ dispatch, app }) => {
-  const { menuCollapsed, isSmallScreen, menuItem, userInfo } = app;
+  const { menuCollapsed, smallScreen, menuItem, userInfo,popoverMenuVisible } = app;
   const collapsedNavMenu = () => {
     dispatch({ type: COLLAPSE_MENU })
   }
-
+  const popoverMenu = () => {
+		dispatch({type:POPOVER_MENU})
+  }
   return (
     <Header className="header">
       {
-        isSmallScreen ? (
+				smallScreen ? (
           <Popover
             trigger="click"
             placement="bottomLeft"
             overlayClassName="popovermenu"
-            content={<MenuNav menuItem={menuItem}/>}
+            content={<MenuNav menuItem={menuItem} clickMenu={popoverMenu}/>}
+            onVisibleChange={popoverMenu}
+            visible={popoverMenuVisible}
           >
             <div className="button">
               <Icon type="bars" />
