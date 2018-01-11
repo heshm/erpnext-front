@@ -1,6 +1,8 @@
 import React,{PureComponent} from 'react';
 import { Tabs } from 'antd';
 import PermissionList from '../components/PermissionList';
+import UserPerm from '../components/UserPerm';
+import RolePerm from '../components/RolePerm';
 
 const TabPane = Tabs.TabPane;
 class Permission extends PureComponent {
@@ -11,10 +13,10 @@ class Permission extends PureComponent {
 					<PermissionList />
 				</TabPane>
 				<TabPane tab="角色权限" key="rolePerm">
-					角色权限
+					<RolePerm />
 				</TabPane>
 				<TabPane tab="用户权限" key="userPerm">
-					用户权限
+					<UserPerm />
 				</TabPane>
 			</Tabs>
 		)
