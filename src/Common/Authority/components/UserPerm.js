@@ -1,61 +1,114 @@
 import React,{PureComponent} from 'react';
-import {Transfer} from 'antd';
+import {Transfer,Form,Button,Input,Card,message} from 'antd';
+import { list as listPerm,user_perm,update_user_perm} from '../services/Permisson';
 
+const FormItem = Form.Item;
+const getMockData = (permList) => {
+	return permList.map(item => {
+		return {
+			permissionId: item.permissionId,
+			permissionName: item.permissionName,
+			disabled: item.isFriendly
+		}
+	})
+}
 class UserPerm extends PureComponent{
 	state = {
-		mockData: [],
+		loading: false,
 		targetKeys: [],
+		permList: []
 	}
-	componentDidMount() {
-		this.getMock();
+	init = () => {
+		this.setState({loading:true})
+		listPerm().then(({data}) => {
+			this.setState({
+				loading: false,
+				permList: data
+			})
+		})
 	}
-	getMock = () => {
-		const targetKeys = [];
-		const mockData = [];
-		for (let i = 0; i < 20; i++) {
-			const data = {
-				key: i.toString(),
-				title: `content${i + 1}`,
-				description: `description of content${i + 1}`,
-				chosen: Math.random() * 2 > 1,
-			};
-			if (data.chosen) {
-				targetKeys.push(data.key);
-			}
-			mockData.push(data);
-		}
-		this.setState({ mockData, targetKeys });
-	}
-	handleChange = (targetKeys, direction, moveKeys) => {
-		console.log(targetKeys, direction, moveKeys);
-		this.setState({ targetKeys });
+	fetch = (userId) => {
+		this.setState({loading:true})
+		user_perm(userId).then(({data}) => {
+			this.setState({
+				loading:false,
+				targetKeys:data.permissionList
+			})
+		})
 	}
 	renderItem = (item) => {
-		const customLabel = (
-			<span className="custom-item">
-        {item.title} - {item.description}
-      </span>
-		);
-
 		return {
-			label: customLabel, // for displayed item
-			value: item.title, // for title and filter matching
-		};
+			label: item.permissionName,
+			value: item.permissionId
+		}
+	}
+	handleChange = (nextTargetKeys, direction, moveKeys) => {
+		this.setState({ targetKeys: nextTargetKeys });
+	}
+	handleQuery = () => {
+		this.fetch(this.props.form.getFieldValue('userId'))
+	}
+	updatePerm = () => {
+		const userId = this.props.form.getFieldValue('userId');
+		const userPerm = {
+			userId,
+			permissionList: this.state.targetKeys
+		}
+		update_user_perm(userPerm).then(({success}) => {
+			if(success){
+				message.success("用户权限更新成功!")
+				this.fetch(userId);
+			}
+		})
+	}
+	componentDidMount() {
+		this.init()
 	}
 	render(){
+		const {getFieldDecorator} = this.props.form;
 		return(
-			<Transfer
-				dataSource={this.state.mockData}
-				listStyle={{
-					width: 300,
-					height: 300,
-				}}
-				targetKeys={this.state.targetKeys}
-				onChange={this.handleChange}
-				render={this.renderItem}
-			/>
+			<div>
+				<Card bordered={false}>
+					<Form layout="inline"
+								style={{display: 'flex',justifyContent: 'center'}}
+					>
+						<FormItem label="用户">
+							{getFieldDecorator('userId',{initialValue: ''})(
+								<Input />
+							)}
+						</FormItem>
+						<FormItem>
+							<Button type="primary"
+											htmlType="button"
+											onClick={this.handleQuery}
+											loading={this.state.loading}
+							>查询</Button>
+						</FormItem>
+					</Form>
+				</Card>
+				<Card style={{display: 'flex',justifyContent: 'center'}}
+							loading={this.state.loading}
+				>
+					<Transfer
+						rowKey={record => record.permissionId}
+						dataSource={getMockData(this.state.permList)}
+						titles={['系统已有权限', '当前用户权限']}
+						render={this.renderItem}
+						targetKeys={this.state.targetKeys}
+						onChange={this.handleChange}
+						listStyle={{
+							width: 250,
+							height: 300,
+						}}
+					/>
+					<Button type="primary"
+									style={{marginTop: '25px'}}
+									onClick={this.updatePerm}
+					>提交</Button>
+				</Card>
+			</div>
 		)
 	}
 }
 
-export default UserPerm;
+export default Form.create()(UserPerm);

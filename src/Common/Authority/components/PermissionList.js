@@ -1,7 +1,7 @@
 import React,{PureComponent} from 'react';
 import { Button, Table } from 'antd';
 import PermissionForm from './PermissionForm';
-import {list,create} from '../services/Permisson';
+import {tree_list,create} from '../services/Permisson';
 
 const getParentPerm = (permList) => {
 	return permList.map(item => {
@@ -20,7 +20,7 @@ class PermissionList extends PureComponent {
 	}
 	fetch = () => {
 		this.setState({loading: true})
-		list().then(({data}) => {
+		tree_list().then(({data}) => {
 			this.setState({
 				loading: false,
 				permList: data,

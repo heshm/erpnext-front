@@ -75,7 +75,7 @@ class UserRole extends PureComponent{
           <Transfer
             rowKey={record => record.roleId}
             dataSource={this.state.mockData}
-            titles={['系统已有权限', '当前用户权限']}
+            titles={['系统已有角色', '当前用户角色']}
             render={this.renderItem}
             targetKeys={this.state.targetKeys}
             onChange={this.handleChange}
