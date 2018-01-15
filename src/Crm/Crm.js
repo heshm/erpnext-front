@@ -1,12 +1,13 @@
-import React,{ PureComponent } from 'react';
-class Crm extends PureComponent{
-	render(){
-		return (
-			<div>
-				This is Crm
-			</div>
-		)
-	}
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Customer from './Customer';
+
+const Crm = ({match}) => {
+	return (
+		<Switch>
+			<Route path={`${match.url}/customer`} component={Customer}/>
+		</Switch>
+	)
 }
 
 export default Crm;
