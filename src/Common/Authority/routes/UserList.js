@@ -69,7 +69,7 @@ class UserList extends PureComponent{
         key: 'detail',
         render: (text, record) => (
           <span>
-            <a>详细</a>
+            <a disabled={this.props.modal}>详细</a>
           </span>
         )
       }
@@ -99,9 +99,11 @@ class UserList extends PureComponent{
             <FormItem>
               <Button type="primary" htmlType="submit" icon="search">查询</Button>
             </FormItem>
-            <FormItem>
-              <Button icon="upload">导入</Button>
-            </FormItem>
+            {this.props.modal ? '' :
+							<FormItem>
+								<Button icon="upload">导入</Button>
+							</FormItem>
+            }
           </Form>
         </Card>
         <Table columns={columns}

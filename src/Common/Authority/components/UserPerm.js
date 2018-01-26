@@ -1,5 +1,6 @@
 import React,{PureComponent} from 'react';
 import {Transfer,Form,Button,Input,Card,message} from 'antd';
+import UserSelect from './UserSelect';
 import { list as listPerm,user_perm,update_user_perm} from '../services/Permisson';
 
 const FormItem = Form.Item;
@@ -12,11 +13,13 @@ const getMockData = (permList) => {
 		}
 	})
 }
+const Search = Input.Search;
 class UserPerm extends PureComponent{
 	state = {
 		loading: false,
 		targetKeys: [],
-		permList: []
+		permList: [],
+		modal: false
 	}
 	init = () => {
 		this.setState({loading:true})
@@ -61,6 +64,12 @@ class UserPerm extends PureComponent{
 			}
 		})
 	}
+	showUserSelectModal = () => {
+		this.setState({modal: true})
+	}
+	hideUserSelectModal = () => {
+		this.setState({modal: false})
+	}
 	componentDidMount() {
 		this.init()
 	}
@@ -74,7 +83,7 @@ class UserPerm extends PureComponent{
 					>
 						<FormItem label="用户">
 							{getFieldDecorator('userId',{initialValue: ''})(
-								<Input />
+								<Search onSearch={this.showUserSelectModal} enterButton/>
 							)}
 						</FormItem>
 						<FormItem>
@@ -106,6 +115,9 @@ class UserPerm extends PureComponent{
 									onClick={this.updatePerm}
 					>提交</Button>
 				</Card>
+				<UserSelect visible={this.state.modal}
+										onCancle={this.hideUserSelectModal}
+				/>
 			</div>
 		)
 	}
