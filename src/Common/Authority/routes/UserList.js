@@ -8,10 +8,12 @@ class UserList extends PureComponent{
   state = {
     loading: false,
     pagination: {
-      size: 'default'
+      size: 'default',
+			pageSize: this.props.modal ? 5 : 10
     },
     data: [],
-    params: {}
+    params: {},
+    selectedRow: {}
   }
   fetch = (pagination) => {
     this.setState({loading: true});
@@ -39,7 +41,7 @@ class UserList extends PureComponent{
     })
   }
   componentDidMount() {
-    this.fetch();
+    this.fetch(this.state.pagination);
   }
 
   render(){
@@ -113,6 +115,17 @@ class UserList extends PureComponent{
                pagination={this.state.pagination}
                onChange={this.handleTableChange}
                rowKey="userId"
+               onRow={(record) => ({
+                 onClick: () => {
+                   this.setState({selectedRow: record})
+                 }
+               })}
+							 rowClassName={(record) => {
+							   if(record.userId === this.state.selectedRow.userId){
+									 return 'table-row-selected'
+                 }
+							   return ''
+               }}
         />
       </div>
     )
