@@ -243,45 +243,45 @@ export default Form.create({
   mapPropsToFields(props){
     const { department } = props;
     return {
-      id:{
+      id:Form.createFormField({
         value: department.id
-      },
-      parentId: {
+      }),
+      parentId: Form.createFormField({
         value: department.parentId
-      },
-      name: {
+      }),
+      name: Form.createFormField({
         value: department.name
-      },
-      areaCode: {
+      }),
+      areaCode: Form.createFormField({
         value: department.areaCode
-      },
-      type: {
+      }),
+      type: Form.createFormField({
         value: department.type
-      },
-      code: {
+      }),
+      code: Form.createFormField({
         value: department.code
-      },
-      grade: {
+      }),
+      grade: Form.createFormField({
         value: department.grade
-      },
-      addr: {
+      }),
+      addr: Form.createFormField({
         value: department.addr
-      },
-      telNo: {
+      }),
+      telNo: Form.createFormField({
         value: department.telNo
-      },
-      faxNo: {
+      }),
+      faxNo: Form.createFormField({
         value: department.faxNo
-      },
-      email: {
+      }),
+      email: Form.createFormField({
         value: department.email
-      },
-      remark: {
+      }),
+      remark: Form.createFormField({
         value: department.remark
-      },
-      delFlg: {
+      }),
+      delFlg: Form.createFormField({
         value: department.delFlg
-      }
+      })
     }
   }
 })(DepartmentForm);

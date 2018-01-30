@@ -1,13 +1,16 @@
 import React,{PureComponent} from 'react';
 import { Card, Form, Input, Button, Transfer, message } from 'antd';
+import UserSelect from '../components/UserSelect';
 import { list, user_role,update } from '../services/Role';
 
 const FormItem = Form.Item;
+const Search = Input.Search;
 class UserRole extends PureComponent{
   state = {
     mockData: [],
     targetKeys: [],
-    loading: false
+    loading: false,
+    userModal: false
   }
   fetch = (userId) => {
     this.setState({loading: true})
@@ -46,6 +49,19 @@ class UserRole extends PureComponent{
       }
     })
   }
+	showUserSelectModal = () => {
+		this.setState({userModal: true})
+	}
+	hideUserSelectModal = () => {
+		this.setState({userModal: false})
+	}
+	okUserSelectModal = (record) => {
+		this.props.form.setFieldsValue({
+			userId: record.userId,
+			userName: record.userName
+		})
+		this.hideUserSelectModal();
+	}
   componentDidMount() {
     list().then(({data}) => {
       this.setState({mockData: data})
@@ -60,10 +76,13 @@ class UserRole extends PureComponent{
                 onSubmit={this.handleSubmit}
           >
             <FormItem label="用户">
-              {getFieldDecorator('userId',{initialValue: ''})(
-                <Input />
+              {getFieldDecorator('userName',{initialValue: ''})(
+								<Search onSearch={this.showUserSelectModal} enterButton readOnly/>
               )}
             </FormItem>
+						{getFieldDecorator('userId',{initialValue: ''})(
+							<Input type="hidden"/>
+						)}
             <FormItem>
               <Button type="primary" htmlType="submit">查询</Button>
             </FormItem>
@@ -82,6 +101,10 @@ class UserRole extends PureComponent{
           />
           <Button type="primary" style={{marginTop: '25px'}} onClick={this.changRole}>提交</Button>
         </Card>
+				<UserSelect visible={this.state.userModal}
+										onCancle={this.hideUserSelectModal}
+										selectOk={this.okUserSelectModal}
+				/>
       </div>
     )
   }

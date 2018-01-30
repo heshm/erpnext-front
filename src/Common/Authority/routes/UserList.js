@@ -117,7 +117,10 @@ class UserList extends PureComponent{
                rowKey="userId"
                onRow={(record) => ({
                  onClick: () => {
-                   this.setState({selectedRow: record})
+                   if(this.props.modal){
+										 this.setState({selectedRow: record});
+										 this.props.onSelect(record);
+                   }
                  }
                })}
 							 rowClassName={(record) => {

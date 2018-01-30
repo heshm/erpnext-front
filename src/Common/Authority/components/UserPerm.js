@@ -70,6 +70,13 @@ class UserPerm extends PureComponent{
 	hideUserSelectModal = () => {
 		this.setState({modal: false})
 	}
+	okUserSelectModal = (record) => {
+		this.props.form.setFieldsValue({
+			userId: record.userId,
+			userName: record.userName
+		})
+		this.hideUserSelectModal();
+	}
 	componentDidMount() {
 		this.init()
 	}
@@ -82,10 +89,13 @@ class UserPerm extends PureComponent{
 								style={{display: 'flex',justifyContent: 'center'}}
 					>
 						<FormItem label="用户">
-							{getFieldDecorator('userId',{initialValue: ''})(
-								<Search onSearch={this.showUserSelectModal} enterButton/>
+							{getFieldDecorator('userName',{initialValue: ''})(
+								<Search onSearch={this.showUserSelectModal} enterButton readOnly/>
 							)}
 						</FormItem>
+						{getFieldDecorator('userId',{initialValue: ''})(
+							<Input type="hidden"/>
+						)}
 						<FormItem>
 							<Button type="primary"
 											htmlType="button"
@@ -117,6 +127,7 @@ class UserPerm extends PureComponent{
 				</Card>
 				<UserSelect visible={this.state.modal}
 										onCancle={this.hideUserSelectModal}
+										selectOk={this.okUserSelectModal}
 				/>
 			</div>
 		)
