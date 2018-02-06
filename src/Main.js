@@ -10,6 +10,7 @@ import Developer from './Developer/';
 import Ledger from './Ledger/';
 import Stock from './Stock/';
 import Crm from './Crm/';
+import OA from './OA/';
 
 const { Content, Footer } = Layout;
 class Main extends PureComponent{
@@ -35,6 +36,7 @@ class Main extends PureComponent{
 							<Route path="/crm" component={Crm}/>
 							<Route path="/ledger" component={Ledger}/>
 							<Route path="/stock" component={Stock}/>
+							<Route path="/oa" component={OA}/>
 							<Route path="/developer" component={Developer}/>
 						</Switch>
 					</Content>

@@ -1,0 +1,6 @@
+{
+  "name": "Act",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Act.js"
+}
