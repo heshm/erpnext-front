@@ -3,11 +3,13 @@ import { Form, Button, Card, Input, Table } from 'antd';
 import { Link } from 'react-router-dom';
 import {list} from '../services/Model';
 import {server_path} from '../../../utils/Config';
+import ProcessCreateModal from '../components/ProcessCreateModal';
 
 const FormItem = Form.Item;
 class Model extends PureComponent{
 	state = {
 		loading: false,
+		createModalVisible: false,
 		data: []
 	}
 	fetch = (params) => {
@@ -18,6 +20,12 @@ class Model extends PureComponent{
 				data
 			})
 		})
+	}
+	showCreateModal = () => {
+		this.setState({createModalVisible: true})
+	}
+	hideCreateModal = () => {
+		this.setState({createModalVisible: false})
 	}
 	componentDidMount(){
 		this.fetch({});
@@ -70,9 +78,9 @@ class Model extends PureComponent{
 					</Form>
 				</Card>
 				<div className="table-title">
-					<span>权限列表</span>
+					<span>模型列表</span>
 					<span className="table-title-operations">
-            <Button type="primary" size="small">新增</Button>
+            <Button type="primary" size="small" onClick={this.showCreateModal}>新增</Button>
 						<Button type="primary" size="small">导入</Button>
           </span>
 				</div>
@@ -82,6 +90,9 @@ class Model extends PureComponent{
 				       rowKey="key"
 				>
 				</Table>
+				<ProcessCreateModal visible={this.state.createModalVisible}
+														onCancel={this.hideCreateModal}
+				/>
 			</div>
 		)
 	}
