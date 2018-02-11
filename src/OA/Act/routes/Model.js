@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Form, Button, Card, Input, Table } from 'antd';
 import { Link } from 'react-router-dom';
-import {list} from '../services/Model';
+import {list,create} from '../services/Model';
 import {server_path} from '../../../utils/Config';
 import ProcessCreateModal from '../components/ProcessCreateModal';
 
@@ -13,7 +13,10 @@ class Model extends PureComponent{
 		data: []
 	}
 	fetch = (params) => {
-		this.setState({loading: true});
+		this.setState({
+			loading: true,
+			createModalVisible: false
+		});
 		list(params).then(({ data }) => {
 			this.setState({
 				loading: false,
@@ -26,6 +29,13 @@ class Model extends PureComponent{
 	}
 	hideCreateModal = () => {
 		this.setState({createModalVisible: false})
+	}
+	createModel = (model) => {
+		create(model).then(({success,data}) => {
+			if(success){
+				this.fetch({})
+			}
+		})
 	}
 	componentDidMount(){
 		this.fetch({});
@@ -92,6 +102,7 @@ class Model extends PureComponent{
 				</Table>
 				<ProcessCreateModal visible={this.state.createModalVisible}
 														onCancel={this.hideCreateModal}
+														createModel={this.createModel}
 				/>
 			</div>
 		)

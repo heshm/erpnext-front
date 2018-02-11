@@ -7,3 +7,10 @@ export async function list(params) {
     method: 'get'
   });
 }
+
+export async function create(model) {
+	return request('/api/oa/act/models/create',{
+		method: 'post',
+		body: model
+	});
+}
