@@ -8,8 +8,14 @@ export async function list(pagination,params) {
   }
   let url = `/api/common/authority/user/list?page=${current}&size=${size}`
   url += '&' + jsonToUrlParams(params);
-  console.log(pagination)
   return request(url,{
     method: 'get'
   });
+}
+
+export async function create(adminUser) {
+	return request('/api/common/authority/user/create',{
+		method: 'post',
+		body: adminUser
+	});
 }
