@@ -2,7 +2,7 @@ import React,{PureComponent} from 'react';
 import { Tabs } from 'antd';
 import UserList from './UserList';
 import UserModify from './UserModify';
-
+import { create } from '../services/User';
 
 const TabPane = Tabs.TabPane;
 class User extends PureComponent{

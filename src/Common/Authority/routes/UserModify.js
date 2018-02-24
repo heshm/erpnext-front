@@ -1,8 +1,8 @@
 import React,{PureComponent} from 'react';
-import {Form,Input,TreeSelect,Select,Radio,Button} from 'antd';
+import {Form,Input,TreeSelect,Select,Radio,Button,message} from 'antd';
 import {tree} from '../../Setup/services/Department';
-import {list} from '../../Authority/services/Role';
-import {create} from '../../Authority/services/User';
+import {list} from '../services/Role';
+import { create } from '../services/User';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -68,10 +68,9 @@ class UserModify extends PureComponent{
 		e.preventDefault();
 		this.props.form.validateFields((errors, values) => {
 			if(!errors){
-				console.log(values)
 				create(values).then(({success}) => {
 					if(success){
-						console.log("success")
+						message.success('用户信息新增成功!')
 					}
 				})
 			}
