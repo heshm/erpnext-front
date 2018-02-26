@@ -2,7 +2,7 @@ import React,{PureComponent} from 'react';
 import {Form,Input,TreeSelect,Select,Radio,Button,message} from 'antd';
 import {tree} from '../../Setup/services/Department';
 import {list} from '../services/Role';
-import { create } from '../services/User';
+import { create, update } from '../services/User';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -68,11 +68,19 @@ class UserModify extends PureComponent{
 		e.preventDefault();
 		this.props.form.validateFields((errors, values) => {
 			if(!errors){
-				create(values).then(({success}) => {
-					if(success){
-						message.success('用户信息新增成功!')
-					}
-				})
+				if(this.props.mode === 'modify'){
+					update(values).then(({success}) => {
+						if (success) {
+							message.success('用户信息修改成功!')
+						}
+					})
+				}else {
+					create(values).then(({success}) => {
+						if(success){
+							message.success('用户信息新增成功!')
+						}
+					})
+				}
 			}
 		})
 	}
@@ -167,4 +175,30 @@ class UserModify extends PureComponent{
 
 }
 
-export default Form.create()(UserModify);
+export default Form.create({
+	mapPropsToFields(props) {
+		return {
+			userName: Form.createFormField({
+				value: props.user.userName
+			}),
+			loginName: Form.createFormField({
+				value: props.user.loginName
+			}),
+			roleName: Form.createFormField({
+				value: props.user.roleName
+			}),
+			departmentIds: Form.createFormField({
+				value: props.user.departmentIds
+			}),
+			phoneNumber: Form.createFormField({
+				value: props.user.phoneNumber
+			}),
+			email: Form.createFormField({
+				value: props.user.email
+			}),
+			activeStatusFlag: Form.createFormField({
+				value: props.user.activeStatusFlag
+			})
+		}
+	}
+})(UserModify);

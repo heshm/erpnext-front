@@ -19,3 +19,16 @@ export async function create(adminUser) {
 		body: adminUser
 	});
 }
+
+export async function listOne(userId) {
+	return request(`/api/common/authority/user/${userId}`,{
+		method: 'get'
+	});
+}
+
+export async function update(user) {
+	return request('/api/common/authority/user/update',{
+		method: 'put',
+		body: user
+	});
+}

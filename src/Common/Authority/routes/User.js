@@ -2,20 +2,30 @@ import React,{PureComponent} from 'react';
 import { Tabs } from 'antd';
 import UserList from './UserList';
 import UserModify from './UserModify';
-import { create } from '../services/User';
+import { listOne } from '../services/User';
 
 const TabPane = Tabs.TabPane;
 class User extends PureComponent{
   state = {
-    activeKey: 'list'
+    activeKey: 'list',
+	  mode: 'list',
+	  user: {}
   }
   handleTabChange = (key) => {
 		this.setState({
-			activeKey: key
+			activeKey: key,
+			mode: key === 'list' ? 'list' : '',
+			user: {}
 		});
   }
-  showDetail = () => {
-
+  showDetail = (userId) => {
+	  listOne(userId).then(({data}) => {
+	  	this.setState({
+			  user: data,
+			  activeKey: 'modify',
+			  mode: 'modify'
+	  	})
+	  })
   }
   render(){
     return(
@@ -24,10 +34,10 @@ class User extends PureComponent{
 							onChange={this.handleTabChange}
         >
           <TabPane tab="用户列表" key="list">
-            <UserList />
+            <UserList showDetail={this.showDetail}/>
           </TabPane>
-          <TabPane tab="用户添加" key="modify">
-            <UserModify />
+          <TabPane tab={this.state.mode === 'modify' ? '用户修改' : '用户新增'} key="modify">
+            <UserModify user={this.state.user} mode={this.state.mode}/>
           </TabPane>
         </Tabs>
       </div>

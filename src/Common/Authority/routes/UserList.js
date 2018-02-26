@@ -71,7 +71,9 @@ class UserList extends PureComponent{
         key: 'detail',
         render: (text, record) => (
           <span>
-            <a disabled={this.props.modal}>详细</a>
+            <a disabled={this.props.modal} onClick={() => {
+            	this.props.showDetail(record.userId)
+            }}>详细</a>
           </span>
         )
       }
