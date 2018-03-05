@@ -62,9 +62,10 @@ class Model extends PureComponent{
 						<a href={`${server_path}/static/activiti/editor/index.html#/editor/${record.id}`} target="_blank">编辑</a>
 						<span className="ant-divider" />
 						<Link to={`/developer/menu`} >导出</Link>
-          </span>
+          			</span>
 				)
-			}];
+			}
+		];
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<div>
@@ -90,9 +91,9 @@ class Model extends PureComponent{
 				<div className="table-title">
 					<span>模型列表</span>
 					<span className="table-title-operations">
-            <Button type="primary" size="small" onClick={this.showCreateModal}>新增</Button>
+            			<Button type="primary" size="small" onClick={this.showCreateModal}>新增</Button>
 						<Button type="primary" size="small">导入</Button>
-          </span>
+          			</span>
 				</div>
 				<Table columns={columns}
 				       size="middle"
@@ -101,8 +102,8 @@ class Model extends PureComponent{
 				>
 				</Table>
 				<ProcessCreateModal visible={this.state.createModalVisible}
-														onCancel={this.hideCreateModal}
-														createModel={this.createModel}
+									onCancel={this.hideCreateModal}
+									createModel={this.createModel}
 				/>
 			</div>
 		)
