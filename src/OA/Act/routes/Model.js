@@ -1,15 +1,27 @@
 import React, { PureComponent } from 'react';
-import { Form, Button, Card, Input, Table } from 'antd';
+import { Form, Button, Card, Input, Table, message, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
-import {list,create} from '../services/Model';
+import { connect } from 'react-redux';
+import {list,create,deploy} from '../services/Model';
 import {server_path} from '../../../utils/Config';
 import ProcessCreateModal from '../components/ProcessCreateModal';
+import CategorySetModal from '../components/CategorySetModal';
 
 const FormItem = Form.Item;
+const getName = (id,appList) => {
+	appList.map((item) => {
+		if(id === item.id){
+			return item.name
+		}
+	})
+	return "暂无分类";
+}
 class Model extends PureComponent{
 	state = {
 		loading: false,
 		createModalVisible: false,
+		category: '',
+		setCategoryModalVisible: false,
 		data: []
 	}
 	fetch = (params) => {
@@ -29,6 +41,22 @@ class Model extends PureComponent{
 	}
 	hideCreateModal = () => {
 		this.setState({createModalVisible: false})
+	}
+	hideSetCategoryModal = () => {
+		this.setState({setCategoryModalVisible: false})
+	}
+	showSetCategoryModal = (category) => {
+		this.setState({
+			category,
+			setCategoryModalVisible: true
+		})
+	}
+	deployModel = (modelId) => {
+		deploy(modelId).then(({success}) => {
+			if(success) {
+				message.success("模型部署成功!")
+			}
+		})
 	}
 	createModel = (model) => {
 		create(model).then(({success,data}) => {
@@ -51,6 +79,14 @@ class Model extends PureComponent{
 				dataIndex: 'name',
 				key: 'name'
 			}, {
+				title: '分类',
+				key: 'category',
+				render: (text,record) => (
+					<a onClick={() => {
+						this.showSetCategoryModal(record.category)
+					}}>{getName(record.category,this.props.app.appList)}</a>
+				)
+			},{
 				title: '版本',
 				dataIndex: 'version',
 				key: 'version'
@@ -61,8 +97,14 @@ class Model extends PureComponent{
 					<span>
 						<a href={`${server_path}/static/activiti/editor/index.html#/editor/${record.id}`} target="_blank">编辑</a>
 						<span className="ant-divider" />
+						<Popconfirm title="你确认部署该模型?" onConfirm={() => {
+							this.deployModel(record.id)
+						}} okText="确认" cancelText="取消">
+              <a>部署</a>
+            </Popconfirm>
+						<span className="ant-divider" />
 						<Link to={`/developer/menu`} >导出</Link>
-          			</span>
+					</span>
 				)
 			}
 		];
@@ -105,9 +147,14 @@ class Model extends PureComponent{
 									onCancel={this.hideCreateModal}
 									createModel={this.createModel}
 				/>
+				<CategorySetModal visible={this.state.setCategoryModalVisible}
+				                  onCancle={this.hideSetCategoryModal}
+				                  appList={this.props.app.appList}
+				                  category={this.props.category}
+				/>
 			</div>
 		)
 	}
 }
 
-export default Form.create()(Model);
+export default connect(({ app }) => ({ app }))(Form.create()(Model));

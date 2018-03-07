@@ -14,3 +14,9 @@ export async function create(model) {
 		body: model
 	});
 }
+
+export async function deploy(modelId) {
+	return request(`/api/oa/act/models/deploy/${modelId}`,{
+			method: 'put'
+	})
+}
