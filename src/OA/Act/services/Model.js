@@ -20,3 +20,9 @@ export async function deploy(modelId) {
 			method: 'put'
 	})
 }
+
+export async function updateCategory(appId,modelId) {
+	return request(`/api/oa/act/models/category/${modelId}/${appId}`,{
+		method: 'put'
+	})
+}

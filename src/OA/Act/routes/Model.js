@@ -2,32 +2,38 @@ import React, { PureComponent } from 'react';
 import { Form, Button, Card, Input, Table, message, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {list,create,deploy} from '../services/Model';
+import {list,create,deploy,updateCategory} from '../services/Model';
 import {server_path} from '../../../utils/Config';
 import ProcessCreateModal from '../components/ProcessCreateModal';
 import CategorySetModal from '../components/CategorySetModal';
 
 const FormItem = Form.Item;
 const getName = (id,appList) => {
-	appList.map((item) => {
+	let name = "暂无分类";
+	for(let item of appList){
 		if(id === item.id){
-			return item.name
+			name =  item.name;
+			break;
 		}
-	})
-	return "暂无分类";
+	}
+	return name;
 }
 class Model extends PureComponent{
 	state = {
 		loading: false,
 		createModalVisible: false,
-		category: '',
+		category: {
+			modeId: '',
+			appId: ''
+		},
 		setCategoryModalVisible: false,
 		data: []
 	}
 	fetch = (params) => {
 		this.setState({
 			loading: true,
-			createModalVisible: false
+			createModalVisible: false,
+			setCategoryModalVisible: false
 		});
 		list(params).then(({ data }) => {
 			this.setState({
@@ -45,9 +51,11 @@ class Model extends PureComponent{
 	hideSetCategoryModal = () => {
 		this.setState({setCategoryModalVisible: false})
 	}
-	showSetCategoryModal = (category) => {
+	showSetCategoryModal = (appId,modelId) => {
 		this.setState({
-			category,
+			category: {
+				appId,modelId
+			},
 			setCategoryModalVisible: true
 		})
 	}
@@ -62,6 +70,21 @@ class Model extends PureComponent{
 		create(model).then(({success,data}) => {
 			if(success){
 				this.fetch({})
+			}
+		})
+	}
+	changeCategory = () => {
+		updateCategory(this.state.category.appId,this.state.category.modelId).then(({success}) => {
+			if(success) {
+				this.fetch({});
+			}
+		})
+	}
+	updCategory = (appId) => {
+		this.setState({
+			category:{
+				...this.state.category,
+				appId
 			}
 		})
 	}
@@ -83,7 +106,7 @@ class Model extends PureComponent{
 				key: 'category',
 				render: (text,record) => (
 					<a onClick={() => {
-						this.showSetCategoryModal(record.category)
+						this.showSetCategoryModal(record.category,record.id)
 					}}>{getName(record.category,this.props.app.appList)}</a>
 				)
 			},{
@@ -100,10 +123,9 @@ class Model extends PureComponent{
 						<Popconfirm title="你确认部署该模型?" onConfirm={() => {
 							this.deployModel(record.id)
 						}} okText="确认" cancelText="取消">
-              <a>部署</a>
-            </Popconfirm>
-						<span className="ant-divider" />
-						<Link to={`/developer/menu`} >导出</Link>
+              				<a>部署</a>
+            			</Popconfirm>
+						
 					</span>
 				)
 			}
@@ -150,7 +172,9 @@ class Model extends PureComponent{
 				<CategorySetModal visible={this.state.setCategoryModalVisible}
 				                  onCancle={this.hideSetCategoryModal}
 				                  appList={this.props.app.appList}
-				                  category={this.props.category}
+								  category={this.state.category}
+								  selectChange={this.updCategory}
+								  onOk={this.changeCategory}
 				/>
 			</div>
 		)
