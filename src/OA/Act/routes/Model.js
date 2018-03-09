@@ -1,24 +1,23 @@
 import React, { PureComponent } from 'react';
 import { Form, Button, Card, Input, Table, message, Popconfirm } from 'antd';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {list,create,deploy,updateCategory} from '../services/Model';
-import {server_path} from '../../../utils/Config';
+import { list, create, deploy, updateCategory } from '../services/Model';
+import { server_path } from '../../../utils/Config';
 import ProcessCreateModal from '../components/ProcessCreateModal';
 import CategorySetModal from '../components/CategorySetModal';
 
 const FormItem = Form.Item;
-const getName = (id,appList) => {
+const getName = (id, appList) => {
 	let name = "暂无分类";
-	for(let item of appList){
-		if(id === item.id){
-			name =  item.name;
+	for (let item of appList) {
+		if (id === item.id) {
+			name = item.name;
 			break;
 		}
 	}
 	return name;
 }
-class Model extends PureComponent{
+class Model extends PureComponent {
 	state = {
 		loading: false,
 		createModalVisible: false,
@@ -43,55 +42,55 @@ class Model extends PureComponent{
 		})
 	}
 	showCreateModal = () => {
-		this.setState({createModalVisible: true})
+		this.setState({ createModalVisible: true })
 	}
 	hideCreateModal = () => {
-		this.setState({createModalVisible: false})
+		this.setState({ createModalVisible: false })
 	}
 	hideSetCategoryModal = () => {
-		this.setState({setCategoryModalVisible: false})
+		this.setState({ setCategoryModalVisible: false })
 	}
-	showSetCategoryModal = (appId,modelId) => {
+	showSetCategoryModal = (appId, modelId) => {
 		this.setState({
 			category: {
-				appId,modelId
+				appId, modelId
 			},
 			setCategoryModalVisible: true
 		})
 	}
 	deployModel = (modelId) => {
-		deploy(modelId).then(({success}) => {
-			if(success) {
+		deploy(modelId).then(({ success }) => {
+			if (success) {
 				message.success("模型部署成功!")
 			}
 		})
 	}
 	createModel = (model) => {
-		create(model).then(({success,data}) => {
-			if(success){
+		create(model).then(({ success, data }) => {
+			if (success) {
 				this.fetch({})
 			}
 		})
 	}
 	changeCategory = () => {
-		updateCategory(this.state.category.appId,this.state.category.modelId).then(({success}) => {
-			if(success) {
+		updateCategory(this.state.category.appId, this.state.category.modelId).then(({ success }) => {
+			if (success) {
 				this.fetch({});
 			}
 		})
 	}
 	updCategory = (appId) => {
 		this.setState({
-			category:{
+			category: {
 				...this.state.category,
 				appId
 			}
 		})
 	}
-	componentDidMount(){
+	componentDidMount() {
 		this.fetch({});
 	}
-	render(){
+	render() {
 		const columns = [
 			{
 				title: 'ID',
@@ -104,12 +103,12 @@ class Model extends PureComponent{
 			}, {
 				title: '分类',
 				key: 'category',
-				render: (text,record) => (
+				render: (text, record) => (
 					<a onClick={() => {
-						this.showSetCategoryModal(record.category,record.id)
-					}}>{getName(record.category,this.props.app.appList)}</a>
+						this.showSetCategoryModal(record.category, record.id)
+					}}>{getName(record.category, this.props.app.appList)}</a>
 				)
-			},{
+			}, {
 				title: '版本',
 				dataIndex: 'version',
 				key: 'version'
@@ -123,9 +122,9 @@ class Model extends PureComponent{
 						<Popconfirm title="你确认部署该模型?" onConfirm={() => {
 							this.deployModel(record.id)
 						}} okText="确认" cancelText="取消">
-              				<a>部署</a>
-            			</Popconfirm>
-						
+							<a>部署</a>
+						</Popconfirm>
+
 					</span>
 				)
 			}
@@ -134,8 +133,8 @@ class Model extends PureComponent{
 		return (
 			<div>
 				<Card bordered={false}>
-					<Form layout="inline" style={{textAlign: 'center'}}
-					      onSubmit={this.handleSubmit}
+					<Form layout="inline" style={{ textAlign: 'center' }}
+						onSubmit={this.handleSubmit}
 					>
 						<FormItem label="所属系统">
 							{getFieldDecorator('departmentId')(
@@ -155,26 +154,26 @@ class Model extends PureComponent{
 				<div className="table-title">
 					<span>模型列表</span>
 					<span className="table-title-operations">
-            			<Button type="primary" size="small" onClick={this.showCreateModal}>新增</Button>
+						<Button type="primary" size="small" onClick={this.showCreateModal}>新增</Button>
 						<Button type="primary" size="small">导入</Button>
-          			</span>
+					</span>
 				</div>
 				<Table columns={columns}
-				       size="middle"
-				       dataSource={this.state.data}
-				       rowKey="key"
+					size="middle"
+					dataSource={this.state.data}
+					rowKey="key"
 				>
 				</Table>
 				<ProcessCreateModal visible={this.state.createModalVisible}
-									onCancel={this.hideCreateModal}
-									createModel={this.createModel}
+					onCancel={this.hideCreateModal}
+					createModel={this.createModel}
 				/>
 				<CategorySetModal visible={this.state.setCategoryModalVisible}
-				                  onCancle={this.hideSetCategoryModal}
-				                  appList={this.props.app.appList}
-								  category={this.state.category}
-								  selectChange={this.updCategory}
-								  onOk={this.changeCategory}
+					onCancle={this.hideSetCategoryModal}
+					appList={this.props.app.appList}
+					category={this.state.category}
+					selectChange={this.updCategory}
+					onOk={this.changeCategory}
 				/>
 			</div>
 		)
