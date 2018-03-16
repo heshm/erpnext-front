@@ -1,6 +1,6 @@
 import React,{ PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { Layout  } from 'antd';
 import {Aside,BreadNav,LayoutHeader,Setting} from './Layout';
 import Loader from './components/Loader/';
@@ -14,13 +14,23 @@ import OA from './OA/';
 
 const { Content, Footer } = Layout;
 class Main extends PureComponent{
+	state = {
+		hasError: false
+	}
 	componentDidMount(){
 		const { dispatch } = this.props;
 		dispatch(loadUserInfo());
 		dispatch(loadAppInfo());
 	}
-
+	componentDidCatch(error, info){
+		this.setState({ hasError: true });
+	}
 	render(){
+		if (this.state.hasError) {
+			return (
+				<Redirect to="/login"/>
+			)
+		}
 		const {menuCollapsed,menuItem,smallScreen} = this.props.app;
 		const asideProps = {menuCollapsed,menuItem}
 		return(
