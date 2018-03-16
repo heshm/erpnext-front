@@ -1,5 +1,6 @@
 import React,{PureComponent} from 'react';
 import {Tabs} from 'antd';
+import TaskList from '../components/TaskList';
 
 const TabPane = Tabs.TabPane;
 class Task extends PureComponent {
@@ -13,7 +14,7 @@ class Task extends PureComponent {
 
 				</TabPane>
 				<TabPane tab="新任务" key="new">
-
+					<TaskList/>
 				</TabPane>
 
 			</Tabs>

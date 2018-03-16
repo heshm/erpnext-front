@@ -6,17 +6,8 @@ import {
 import { connect } from 'react-redux';
 import { pageList, deleteProcess } from '../services/Process';
 import { server_path } from '../../../utils/Config';
+import {getCategoryName} from '../../OAUtil';
 
-const getCategoryName = (id, appList) => {
-	let name = "其它";
-	for (let item of appList) {
-		if (id === item.id) {
-			name = item.name;
-			break;
-		}
-	}
-	return name;
-}
 const getSelectOption = (appList) => {
 	return appList.map((item) => {
 		return (
