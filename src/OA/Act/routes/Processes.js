@@ -1,17 +1,18 @@
 import React,{PureComponent} from 'react';
+
 import {Tabs} from 'antd';
-import ToDoTasks from '../components/ToDoTasks';
+import ProcessInfo from '../components/ProcessInfo';
 
 const TabPane = Tabs.TabPane;
-class Task extends PureComponent {
+class Processes extends PureComponent {
 	render(){
 		return (
 			<Tabs>
 				<TabPane tab="可处理" key="doing">
-					<ToDoTasks />
+					
 				</TabPane>
-				<TabPane tab="新任务" key="new">
-
+				<TabPane tab="新流程" key="new">
+					<ProcessInfo/>
 				</TabPane>
 
 			</Tabs>
@@ -19,4 +20,4 @@ class Task extends PureComponent {
 	}
 }
 
-export default Task;
+export default Processes;

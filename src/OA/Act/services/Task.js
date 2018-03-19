@@ -7,8 +7,8 @@ export async function newTask(data) {
 	})
 }
 
-export async function list_doing() {
-	return request('/api/oa/act/task/doing',{
+export async function list_tasks() {
+	return request('/api/oa/act/task/list-tasks',{
 		method: 'get'
 	})
 }

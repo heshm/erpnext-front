@@ -1,15 +1,16 @@
 import React,{PureComponent} from 'react';
 import { Table } from 'antd';
-import { list_doing } from '../services/Task';
+import { list_tasks } from '../services/Task';
+import {server_path} from "../../../utils/Config";
 
-class DoingTask extends PureComponent {
+class ToDoTasks extends PureComponent {
 	state = {
 		loading: false,
 		data: []
 	}
 	fetch = () => {
 		this.setState({ loading: true });
-		list_doing().then(({data}) => {
+		list_tasks().then(({data}) => {
 			this.setState({
 				loading: false,
 				data
@@ -39,9 +40,20 @@ class DoingTask extends PureComponent {
 				dataIndex: 'createTime',
 				key: 'createTime'
 			}, {
-				title: '办理人',
-				dataIndex: 'assignee',
-				key: 'assignee'
+				title: '流程资源',
+				key: 'source',
+				render: (text,record) => (
+					<a href={`${server_path}/static/activiti/editor/index.html#/processes/diagram/${record.processInstanceId}/true`}
+						 target="_blank">流转图</a>
+				)
+			}, {
+				title: '操作',
+				key: 'action',
+				render: (text,record) => (
+					<div>
+						<a>详细</a>
+					</div>
+				)
 			}
 		];
 		return (
@@ -58,4 +70,4 @@ class DoingTask extends PureComponent {
 	}
 }
 
-export default DoingTask;
+export default ToDoTasks;

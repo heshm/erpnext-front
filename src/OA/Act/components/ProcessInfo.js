@@ -16,7 +16,7 @@ const getSelectOption = (appList) => {
 	})
 }
 const FormItem = Form.Item;
-class TaskList extends PureComponent {
+class ProcessInfo extends PureComponent {
 	state = {
 		loading: false,
 		data: [],
@@ -112,7 +112,7 @@ class TaskList extends PureComponent {
 				key: 'resource',
 				render: (text, record) => (
 					<div>
-						<a href={`${server_path}/static/activiti/editor/index.html#/processes/diagram/${record.processDefinition.id}`} target="_blank">流程图</a>
+						<a href={`${server_path}/static/activiti/editor/index.html#/processes/diagram/${record.processDefinition.id}/false`} target="_blank">流程图</a>
 					</div>
 				)
 			}, {
@@ -152,4 +152,4 @@ class TaskList extends PureComponent {
 	}
 }
 
-export default connect(({ app }) => ({ app }))(TaskList);
+export default connect(({ app }) => ({ app }))(ProcessInfo);
