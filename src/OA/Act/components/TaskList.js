@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import {
-	Card, Form, Table, Divider,
-	Popconfirm, message, Select
+	Card, Form, Table, message, Select
 } from 'antd';
 import { connect } from 'react-redux';
 import { pageList, deleteProcess } from '../services/Process';
 import { server_path } from '../../../utils/Config';
 import {getCategoryName} from '../../OAUtil';
+import {newTask} from '../services/Task';
 
 const getSelectOption = (appList) => {
 	return appList.map((item) => {
@@ -62,6 +62,17 @@ class TaskList extends PureComponent {
 		})
 		this.fetch(value);
 	}
+	startProcess = (record) => {
+		const requestData = {
+			name: record.processDefinition.name,
+			processDefinitionId: record.processDefinition.id
+		}
+		newTask(requestData).then(({success}) => {
+			if(success){
+				message.success('流程启动成功!')
+			}
+		})
+	}
 	componentDidMount() {
 		this.fetch();
 	}
@@ -101,7 +112,7 @@ class TaskList extends PureComponent {
 				key: 'resource',
 				render: (text, record) => (
 					<div>
-						<a href={`${server_path}/static/activiti/editor/index.html#/processes/${record.processDefinition.id}`} target="_blank">流程图</a>
+						<a href={`${server_path}/static/activiti/editor/index.html#/processes/diagram/${record.processDefinition.id}`} target="_blank">流程图</a>
 					</div>
 				)
 			}, {
@@ -109,7 +120,9 @@ class TaskList extends PureComponent {
 				key: 'action',
 				render: (text, record) => (
 					<div>
-						<a>启动流程</a>
+						<a onClick={() => {
+							this.startProcess(record);
+						}}>启动流程</a>
 					</div>
 				)
 			}
