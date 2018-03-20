@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import DescriptionList from '../../../components/DescriptionList';
 import {list_one,complete,list_his_tasks} from '../services/Task';
 import {server_path} from "../../../utils/Config";
+import {getDuration} from '../../../utils';
 
 const { Description } = DescriptionList;
 class TaskDetail extends PureComponent{
@@ -76,7 +77,9 @@ class TaskDetail extends PureComponent{
 			}, {
 				title: '任务历时',
 				key: 'duration',
-				dataIndex: 'duration',
+				render: (text,record) => (
+					<span>{getDuration(record.duration)}</span>
+				)
 			}
 		];
 		const {name,assignee,dueDate,processDefinitionName,processInstanceId} = this.state.task;
@@ -85,7 +88,7 @@ class TaskDetail extends PureComponent{
 				<Card bordered={true} title={name} extra={this.getExtra()}>
 					<DescriptionList size="large" col={2}>
 						<Description term="执行人">{assignee}</Description>
-						<Description term="到期时间">{dueDate}</Description>
+						<Description term="到期时间">{dueDate ? dueDate : '无到期时间'}</Description>
 						<Description term="所属流程">
 							<a href={`${server_path}/static/activiti/editor/index.html#/processes/diagram/${processInstanceId}/true`}
 								 target="_blank">{processDefinitionName}</a>

@@ -17,16 +17,34 @@ const jsonToUrlParams = (params) => {
 }
 
 const getDuration = (duration) => {
-	if(duration == undefined){
+	if(duration === undefined){
 		return "";
 	}
-	let remain = 0;
-	const day = duration / (24 * 60 * 60);
+	let remain, result = '';
+	let time = parseInt(duration / 1000,10);
+	const day = parseInt(time / (24 * 60 * 60),10);remain = time % (24 * 60 * 60);
+	const hour = parseInt(remain / (60 * 60),10); remain = remain % (60 * 60);
+	const minute = parseInt(remain / 60,10);
+	const second = remain % 60;
+	if(day > 0) {
+		result += day + "天";
+	}
+	if(hour > 0){
+		result += hour + "时";
+	}
+	if(minute > 0){
+		result += minute + "分";
+	}
+	if(second > 0){
+		result += second + "秒";
+	}
+	return result;
 }
 
 export {
 	storeLoginData,
 	isLogin,
 	request,
-	jsonToUrlParams
+	jsonToUrlParams,
+	getDuration
 };
