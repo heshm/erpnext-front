@@ -16,6 +16,14 @@ const jsonToUrlParams = (params) => {
 	return Object.keys(params).map(i => `${i}=${params[i]}`).join('&');
 }
 
+const getDuration = (duration) => {
+	if(duration == undefined){
+		return "";
+	}
+	let remain = 0;
+	const day = duration / (24 * 60 * 60);
+}
+
 export {
 	storeLoginData,
 	isLogin,

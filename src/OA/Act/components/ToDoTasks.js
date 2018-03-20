@@ -1,4 +1,5 @@
 import React,{PureComponent} from 'react';
+import { Link } from 'react-router-dom';
 import { Table } from 'antd';
 import { list_tasks } from '../services/Task';
 import {server_path} from "../../../utils/Config";
@@ -51,7 +52,7 @@ class ToDoTasks extends PureComponent {
 				key: 'action',
 				render: (text,record) => (
 					<div>
-						<a>详细</a>
+						<Link to={`task/${record.id}`}>详细</Link>
 					</div>
 				)
 			}
