@@ -7,15 +7,15 @@ import ProcessInst from '../components/ProcessInst';
 const TabPane = Tabs.TabPane;
 class Processes extends PureComponent {
 	render(){
+		const {history} = this.props;
 		return (
 			<Tabs>
+				<TabPane tab="新流程" key="new">
+					<ProcessInfo history={history}/>
+				</TabPane>
 				<TabPane tab="可处理" key="doing">
 					<ProcessInst />
 				</TabPane>
-				<TabPane tab="新流程" key="new">
-					<ProcessInfo/>
-				</TabPane>
-
 			</Tabs>
 		)
 	}

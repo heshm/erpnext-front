@@ -17,3 +17,9 @@ export async function hasStartForm(processDefId) {
 		method: 'get'
 	})
 }
+
+export async function listOne(processDefId){
+	return request(`/api/oa/act/process/${processDefId}`,{
+		method: 'get'
+	})
+}

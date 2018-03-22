@@ -63,9 +63,10 @@ class ProcessInfo extends PureComponent {
 		this.fetch(value);
 	}
 	startProcess = (record) => {
-		hasStartForm(record.processDefinition.id).then(({data}) => {
+		const processDefId = record.processDefinition.id;
+		hasStartForm(processDefId).then(({data}) => {
 			if(data){
-				console.log('with form')
+				this.props.history.push(`start-form/${processDefId}`)
 			}else {
 				this.startProcessWithoutForm(record);
 			}
