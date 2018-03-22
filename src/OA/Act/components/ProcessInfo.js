@@ -3,7 +3,7 @@ import {
 	Card, Form, Table, message, Select
 } from 'antd';
 import { connect } from 'react-redux';
-import { pageList, deleteProcess } from '../services/Process';
+import { pageList, deleteProcess, hasStartForm } from '../services/Process';
 import { server_path } from '../../../utils/Config';
 import {getCategoryName} from '../../OAUtil';
 import {newTask} from '../services/Task';
@@ -63,6 +63,15 @@ class ProcessInfo extends PureComponent {
 		this.fetch(value);
 	}
 	startProcess = (record) => {
+		hasStartForm(record.processDefinition.id).then(({data}) => {
+			if(data){
+				console.log('with form')
+			}else {
+				this.startProcessWithoutForm(record);
+			}
+		})
+	}
+	startProcessWithoutForm = (record) => {
 		const requestData = {
 			name: record.processDefinition.name,
 			processDefinitionId: record.processDefinition.id

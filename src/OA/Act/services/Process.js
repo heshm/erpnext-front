@@ -11,3 +11,9 @@ export async function deleteProcess(deployId) {
 		method: 'delete'
 	})
 }
+
+export async function hasStartForm(processDefId) {
+	return request(`/api/oa/act/process/hasStartForm/${processDefId}`,{
+		method: 'get'
+	})
+}
