@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { pageList, deleteProcess, hasStartForm } from '../services/Process';
 import { server_path } from '../../../utils/Config';
 import {getCategoryName} from '../../OAUtil';
-import {newTask} from '../services/Task';
+import {newTaskWithoutForm} from '../services/Task';
 
 const getSelectOption = (appList) => {
 	return appList.map((item) => {
@@ -77,7 +77,7 @@ class ProcessInfo extends PureComponent {
 			name: record.processDefinition.name,
 			processDefinitionId: record.processDefinition.id
 		}
-		newTask(requestData).then(({success}) => {
+		newTaskWithoutForm(requestData).then(({success}) => {
 			if(success){
 				message.success('流程启动成功!')
 			}

@@ -1,6 +1,17 @@
 import { request } from '../../../utils';
 
-export async function newTask(data) {
+export async function newTaskWithoutForm(data) {
+	return request('/api/oa/act/task/process-instances',{
+		method: 'post',
+		body: data
+	})
+}
+
+export async function newTaskWithForm(processDefinitionId,values){
+	const data = {
+		processDefinitionId,
+		values: {...values}
+	}
 	return request('/api/oa/act/task/process-instances',{
 		method: 'post',
 		body: data

@@ -11,7 +11,8 @@ class TaskDetail extends PureComponent{
 	state = {
 		loading: false,
 		task: {},
-		hisTasks: []
+		hisTasks: [],
+		showForm: false
 	}
 	fetch = (id) => {
 		this.setState({ loading: true });
@@ -47,6 +48,9 @@ class TaskDetail extends PureComponent{
 				console.log("success completed task")
 			}
 		})
+	}
+	showForm = () => {
+		this.setState({showForm: !this.state.showForm})
 	}
 	componentDidMount() {
 		const { id } = this.props.match.params;
@@ -94,15 +98,21 @@ class TaskDetail extends PureComponent{
 								 target="_blank">{processDefinitionName}</a>
 						</Description>
 						<Description>
-							<Button type="primary" ghost size="small">显示表单</Button>
+							<Button type="primary" ghost size="small" onClick={this.showForm}>
+								{this.state.showForm ? '显示详细' : '显示表单'}
+							</Button>
 						</Description>
 					</DescriptionList>
 				</Card>
-				<Table dataSource={this.state.hisTasks}
-							 columns={columns}
-							 size="middle"
-							 rowKey="id"
-							 loading={this.state.loading}/>
+				{this.state.showForm ?
+					''
+					:
+					<Table dataSource={this.state.hisTasks}
+					       columns={columns}
+					       size="middle"
+					       rowKey="id"
+					       loading={this.state.loading}/>
+				}
 			</div>
 		)
 	}

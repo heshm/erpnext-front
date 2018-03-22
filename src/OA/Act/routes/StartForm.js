@@ -1,7 +1,8 @@
 import React,{PureComponent} from 'react';
-import {Card,Form,Button,DatePicker,Input } from 'antd';
+import {Card,Form,Button,DatePicker,Input,message } from 'antd';
 import {listOne} from '../services/Process';
 import { getStartForm } from '../services/Form';
+import {newTaskWithForm} from '../services/Task';
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -45,7 +46,7 @@ const renderInput = (field) => {
 	switch (field.type){
 		case 'date' :
 			return (
-				<DatePicker />
+				<DatePicker/>
 			)
 		case 'multi-line-text' :
 			return (
@@ -73,7 +74,17 @@ class StartForm extends PureComponent{
 		e.preventDefault();
 		this.props.form.validateFields((errors, values) => {
 			if(!errors){
-				console.log(values)
+				for(let field in values){
+					if(typeof values[field] === 'object'){
+						values[field] = values[field].format('YYYY-MM-DD')
+					}
+				}
+				newTaskWithForm(this.props.match.params.processDefId,values).then(({success}) => {
+					if(success) {
+						message.success('流程启动成功!')
+						this.props.history.push('../processes')
+					}
+				});
 			}
 		})
 	}
