@@ -1,8 +1,9 @@
-import React,{PureComponent} from 'react';
-import {Card,Form,Button,DatePicker,Input,message } from 'antd';
+import React, {PureComponent} from 'react';
+import {Card, Form, Button, DatePicker, Input, message} from 'antd';
 import {listOne} from '../services/Process';
-import { getStartForm } from '../services/Form';
+import {getStartForm} from '../services/Form';
 import {newTaskWithForm} from '../services/Task';
+import RenderForm from '../components/RenderForm';
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -27,13 +28,13 @@ const tailFormItemLayout = {
 		},
 	},
 };
-const renderForm = (fields = [],getFieldDecorator) => {
+const renderForm = (fields = [], getFieldDecorator) => {
 	return fields.map(field => {
 		return (
 			<FormItem label={field.name} {...formItemLayout} key={field.id}>
 				{getFieldDecorator(`${field.id}`, {
 					rules: [
-						{ required: field.required},
+						{required: field.required},
 					]
 				})(
 					renderInput(field)
@@ -43,26 +44,27 @@ const renderForm = (fields = [],getFieldDecorator) => {
 	})
 }
 const renderInput = (field) => {
-	switch (field.type){
+	switch (field.type) {
 		case 'date' :
 			return (
 				<DatePicker/>
 			)
 		case 'multi-line-text' :
 			return (
-				<Input.TextArea />
+				<Input.TextArea/>
 			)
 		case 'text' :
 			return (
-				<Input />
+				<Input/>
 			)
 		default:
 			return (
-				<Input />
+				<Input/>
 			)
 	}
 }
-class StartForm extends PureComponent{
+
+class StartForm extends PureComponent {
 	state = {
 		loading: false,
 		processInfo: {
@@ -70,23 +72,13 @@ class StartForm extends PureComponent{
 		},
 		formInfo: {}
 	}
-	onSubmit = (e) => {
-		e.preventDefault();
-		this.props.form.validateFields((errors, values) => {
-			if(!errors){
-				for(let field in values){
-					if(typeof values[field] === 'object'){
-						values[field] = values[field].format('YYYY-MM-DD')
-					}
-				}
-				newTaskWithForm(this.props.match.params.processDefId,values).then(({success}) => {
-					if(success) {
-						message.success('流程启动成功!')
-						this.props.history.push('../processes')
-					}
-				});
+	submit = (values) => {
+		newTaskWithForm(this.props.match.params.processDefId, values).then(({success}) => {
+			if (success) {
+				message.success('流程启动成功!')
+				this.props.history.push('../processes')
 			}
-		})
+		});
 	}
 	fetch = () => {
 		const {processDefId} = this.props.match.params;
@@ -106,23 +98,19 @@ class StartForm extends PureComponent{
 		})
 		this.setState({loading: false})
 	}
+
 	componentDidMount() {
 		this.fetch();
 	}
+
 	render() {
 		const {getFieldDecorator} = this.props.form;
-		return(
+		return (
 			<Card bordered={false}
 						title={this.state.processInfo.name}
 						loading={this.state.loading}>
-				<Form onSubmit={this.onSubmit}>
-					{renderForm(this.state.formInfo.fields,getFieldDecorator)}
-					<FormItem {...tailFormItemLayout}>
-						<Button type="primary"
-										htmlType="submit"
-						>提交</Button>
-					</FormItem>
-				</Form>
+				<RenderForm fields={this.state.formInfo.fields}
+										submit={this.submit}/>
 			</Card>
 		)
 	}
