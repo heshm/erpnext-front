@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import {Card,Button,Table} from 'antd';
 import {connect} from 'react-redux';
 import DescriptionList from '../../../components/DescriptionList';
-import {list_one,complete,list_his_tasks} from '../services/Task';
+import RenderForm from '../components/RenderForm';
+import {list_one,complete,list_his_tasks,getFormData} from '../services/Task';
 import {server_path} from "../../../utils/Config";
 import {getDuration} from '../../../utils';
 
@@ -12,7 +13,8 @@ class TaskDetail extends PureComponent{
 		loading: false,
 		task: {},
 		hisTasks: [],
-		showForm: false
+		showForm: false,
+		formInfo: {}
 	}
 	fetch = (id) => {
 		this.setState({ loading: true });
@@ -51,6 +53,11 @@ class TaskDetail extends PureComponent{
 	}
 	showForm = () => {
 		this.setState({showForm: !this.state.showForm})
+		if(!this.state.formInfo.id) {
+			getFormData(this.state.task.id).then(({data}) => {
+				this.setState({formInfo: data})
+			})
+		}
 	}
 	componentDidMount() {
 		const { id } = this.props.match.params;
@@ -98,21 +105,27 @@ class TaskDetail extends PureComponent{
 								 target="_blank">{processDefinitionName}</a>
 						</Description>
 						<Description>
-							<Button type="primary" ghost size="small" onClick={this.showForm}>
-								{this.state.showForm ? '显示详细' : '显示表单'}
-							</Button>
+							{this.state.task.formKey ?
+								<Button type="primary" ghost size="small" onClick={this.showForm}>
+									{this.state.showForm ? '显示详细' : '显示表单'}
+								</Button> :
+								'详细信息'
+							}
+
 						</Description>
 					</DescriptionList>
 				</Card>
-				{this.state.showForm ?
-					''
-					:
-					<Table dataSource={this.state.hisTasks}
-					       columns={columns}
-					       size="middle"
-					       rowKey="id"
-					       loading={this.state.loading}/>
-				}
+				<Card bordered={false}>
+					{this.state.showForm ?
+						<RenderForm fields={this.state.formInfo.fields}/>
+						:
+						<Table dataSource={this.state.hisTasks}
+						       columns={columns}
+						       size="middle"
+						       rowKey="id"
+						       loading={this.state.loading}/>
+					}
+				</Card>
 			</div>
 		)
 	}

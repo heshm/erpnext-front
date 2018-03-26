@@ -61,7 +61,7 @@ class FormModel extends PureComponent {
 				key: 'action',
 				render: (text, record) => (
 					<span>
-						<a href={`${server_path}/static/activiti/editor/#/form-editor/${record.id}`} target="_blank">编辑</a>
+						<a href={`${server_path}/static/flowable/#/form-editor/${record.id}`} target="_blank">编辑</a>
 					</span>
 				)
 			}

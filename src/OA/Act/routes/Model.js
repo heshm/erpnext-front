@@ -117,7 +117,7 @@ class Model extends PureComponent {
 				key: 'action',
 				render: (text, record) => (
 					<span>
-						<a href={`${server_path}/static/activiti/editor/index.html#/editor/${record.id}`} target="_blank">编辑</a>
+						<a href={`${server_path}/static/flowable/index.html#/editor/${record.id}`} target="_blank">编辑</a>
 						<span className="ant-divider" />
 						<Popconfirm title="你确认部署该模型?" onConfirm={() => {
 							this.deployModel(record.id)

@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import {Form,Button,Input,DatePicker} from 'antd';
 
 
@@ -27,25 +28,53 @@ const tailFormItemLayout = {
 };
 const renderForm = (fields = [],getFieldDecorator) => {
 	return fields.map(field => {
-		return (
-			<FormItem label={field.name} {...formItemLayout} key={field.id}>
-				{getFieldDecorator(`${field.id}`, {
-					rules: [
-						{ required: field.required},
-					]
-				})(
-					renderInput(field)
-				)}
-			</FormItem>
-		)
+		if(field.type === 'date'){
+			if(field.value === null){
+				return (
+					<FormItem label={field.name} {...formItemLayout} key={field.id}>
+						{getFieldDecorator(`${field.id}`,{
+							rules: [
+								{ required: field.required},
+							]
+						})(
+							<DatePicker />
+						)}
+					</FormItem>
+				)
+			}else {
+				return (
+					<FormItem label={field.name} {...formItemLayout} key={field.id}>
+						{getFieldDecorator(`${field.id}`,{
+							initialValue: moment(field.value)
+						},{
+							rules: [
+								{ required: field.required },
+							]
+						})(
+							<DatePicker />
+						)}
+					</FormItem>
+				)
+			}
+		}else {
+			return (
+				<FormItem label={field.name} {...formItemLayout} key={field.id}>
+					{getFieldDecorator(`${field.id}`,{
+						initialValue: field.value
+					},{
+						rules: [
+							{ required: field.required},
+						]
+					})(
+						renderInput(field)
+					)}
+				</FormItem>
+			)
+		}
 	})
 }
 const renderInput = (field) => {
 	switch (field.type){
-		case 'date' :
-			return (
-				<DatePicker/>
-			)
 		case 'multi-line-text' :
 			return (
 				<Input.TextArea />

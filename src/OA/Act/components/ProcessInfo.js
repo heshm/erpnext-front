@@ -122,7 +122,7 @@ class ProcessInfo extends PureComponent {
 				key: 'resource',
 				render: (text, record) => (
 					<div>
-						<a href={`${server_path}/static/activiti/editor/index.html#/processes/diagram/${record.processDefinition.id}/false`} target="_blank">流程图</a>
+						<a href={`${server_path}/static/flowable/index.html#/processes/diagram/${record.processDefinition.id}/false`} target="_blank">流程图</a>
 					</div>
 				)
 			}, {

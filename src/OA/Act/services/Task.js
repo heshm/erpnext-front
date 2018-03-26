@@ -41,3 +41,9 @@ export async function list_his_tasks(processInstId) {
 		method: 'get'
 	})
 }
+
+export async function getFormData(taskId) {
+	return request(`/api/oa/act/task/task-form/${taskId}`,{
+		method: 'get'
+	})
+}
