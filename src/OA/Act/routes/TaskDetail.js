@@ -101,7 +101,7 @@ class TaskDetail extends PureComponent{
 						<Description term="执行人">{assignee}</Description>
 						<Description term="到期时间">{dueDate ? dueDate : '无到期时间'}</Description>
 						<Description term="所属流程">
-							<a href={`${server_path}/static/activiti/editor/index.html#/processes/diagram/${processInstanceId}/true`}
+							<a href={`${server_path}/static/flowable/index.html#/processes/diagram/${processInstanceId}/true`}
 								 target="_blank">{processDefinitionName}</a>
 						</Description>
 						<Description>

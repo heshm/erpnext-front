@@ -44,7 +44,7 @@ class ToDoTasks extends PureComponent {
 				title: '流程资源',
 				key: 'source',
 				render: (text,record) => (
-					<a href={`${server_path}/static/activiti/editor/index.html#/processes/diagram/${record.processInstanceId}/true`}
+					<a href={`${server_path}/static/flowable/index.html#/processes/diagram/${record.processInstanceId}/true`}
 						 target="_blank">流转图</a>
 				)
 			}, {
