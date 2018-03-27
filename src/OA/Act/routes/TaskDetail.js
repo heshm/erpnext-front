@@ -60,7 +60,7 @@ class TaskDetail extends PureComponent{
 	}
 	completeTask = () => {
 		if(this.state.task.taskHasForm){
-			
+
 		}else{
 			complete(this.state.task.id).then(({success}) => {
 				if(success){
