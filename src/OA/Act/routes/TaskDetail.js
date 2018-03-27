@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import {Card,Button,Table} from 'antd';
+import {Card,Button,Table,Modal,message} from 'antd';
 import {connect} from 'react-redux';
 import DescriptionList from '../../../components/DescriptionList';
 import RenderForm from '../components/RenderForm';
-import {list_one,complete,list_his_tasks,getFormData} from '../services/Task';
+import {list_one,complete,list_his_tasks,getFormData,claim} from '../services/Task';
 import {server_path} from "../../../utils/Config";
 import {getDuration} from '../../../utils';
 
@@ -39,17 +39,36 @@ class TaskDetail extends PureComponent{
 			)
 		}else {
 			return (
-				<Button>签收</Button>
+				<Button onClick={this.claimTask}>签收</Button>
 			)
 		}
 	}
-	completeTask = () => {
+	claimTask = () => {
 		console.log(this.state.task.id)
-		complete(this.state.task.id).then(({success}) => {
-			if(success){
-				console.log("success completed task")
+		Modal.confirm({
+			title: "签收任务",
+			content: "你确定签收该任务?",
+			onOk: () => {
+				claim(this.state.task.id).then(({success}) => {
+					if(success){
+						const { id } = this.props.match.params;
+						this.fetch(id);
+					}
+				})
 			}
 		})
+	}
+	completeTask = () => {
+		if(this.state.task.taskHasForm){
+			
+		}else{
+			complete(this.state.task.id).then(({success}) => {
+				if(success){
+					message.success("任务处理完成!")
+					this.props.history.push("../task")
+				}
+			})
+		}
 	}
 	showForm = () => {
 		this.setState({showForm: !this.state.showForm})
@@ -117,7 +136,8 @@ class TaskDetail extends PureComponent{
 				</Card>
 				<Card bordered={false}>
 					{this.state.showForm ?
-						<RenderForm fields={this.state.formInfo.fields}/>
+						<RenderForm fields={this.state.formInfo.fields}
+												formProperties={this.state.formInfo.formProperties}/>
 						:
 						<Table dataSource={this.state.hisTasks}
 						       columns={columns}

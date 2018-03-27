@@ -36,6 +36,12 @@ export async function complete(taskId) {
 	})
 }
 
+export async function claim(taskId) {
+	return request(`/api/oa/act/task/${taskId}/action/claim`,{
+		method: 'put'
+	})
+}
+
 export async function list_his_tasks(processInstId) {
 	return request(`/api/oa/act/task/list-tasks/${processInstId}/completed`,{
 		method: 'get'
