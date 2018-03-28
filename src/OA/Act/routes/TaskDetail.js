@@ -49,7 +49,6 @@ class TaskDetail extends PureComponent{
 		}
 	}
 	claimTask = () => {
-		console.log(this.state.task.id)
 		Modal.confirm({
 			title: "签收任务",
 			content: "你确定签收该任务?",
@@ -68,7 +67,7 @@ class TaskDetail extends PureComponent{
 			complete(this.state.task.id,values).then(({success}) => {
 				if(success){
 					message.success("任务处理完成!")
-					//this.props.history.push("../task")
+					this.props.history.push("../task")
 				}
 			})
 		}else{
@@ -80,15 +79,19 @@ class TaskDetail extends PureComponent{
 			})
 		}
 	}
-	showForm = () => {
-		this.setState({showForm: !this.state.showForm})
-		if(!this.state.formInfo.id) {
-			getFormData(this.state.task.id).then(({data}) => {
-				//this.setState({formInfo: data})
-				this.setState({
-					formInfo: data
+	showForm = () => {const {userInfo} = this.props.app;
+		if(this.state.task.assignee === userInfo.userId){
+			this.setState({showForm: !this.state.showForm})
+			if(!this.state.formInfo.id) {
+				getFormData(this.state.task.id).then(({data}) => {
+					//this.setState({formInfo: data})
+					this.setState({
+						formInfo: data
+					})
 				})
-			})
+			}
+		}else{
+			message.info("请先签收任务！")
 		}
 	}
 	componentDidMount() {

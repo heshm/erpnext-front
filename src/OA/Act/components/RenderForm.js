@@ -134,7 +134,6 @@ const RenderForm = ({
 						}
 
 					}) => {
-	console.log(formProperties)
 	const onSubmit = (e) => {
 		e.preventDefault();
 		validateFields((errors, values) => {
