@@ -1,8 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import {Form,Button,Input,DatePicker,Divider,Radio} from 'antd';
+import {Form, Button, Input, DatePicker, Divider, Radio} from 'antd';
 
-const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const formItemLayout = {
 	labelCol: {
@@ -26,44 +25,44 @@ const tailFormItemLayout = {
 		},
 	},
 };
-const renderFields = (fields = [],getFieldDecorator) => {
+const renderFields = (fields = [], getFieldDecorator) => {
 	return fields.map(field => {
-		if(field.type === 'date'){
-			if(field.value === null){
+		if (field.type === 'date') {
+			if (field.value === null) {
 				return (
 					<FormItem label={field.name} {...formItemLayout} key={field.id}>
-						{getFieldDecorator(`${field.id}`,{
+						{getFieldDecorator(`${field.id}`, {
 							rules: [
-								{ required: field.required},
+								{required: field.required},
 							]
 						})(
-							<DatePicker />
+							<DatePicker/>
 						)}
 					</FormItem>
 				)
-			}else {
+			} else {
 				return (
 					<FormItem label={field.name} {...formItemLayout} key={field.id}>
-						{getFieldDecorator(`${field.id}`,{
-							initialValue: moment(field.value)
-						},{
+						{getFieldDecorator(`${field.id}`, {
+							initialValue: moment(field.value, 'YYYY-MM-DD')
+						}, {
 							rules: [
-								{ required: field.required },
+								{required: field.required},
 							]
 						})(
-							<DatePicker />
+							<DatePicker/>
 						)}
 					</FormItem>
 				)
 			}
-		}else {
+		} else {
 			return (
 				<FormItem label={field.name} {...formItemLayout} key={field.id}>
-					{getFieldDecorator(`${field.id}`,{
+					{getFieldDecorator(`${field.id}`, {
 						initialValue: field.value
-					},{
+					}, {
 						rules: [
-							{ required: field.required},
+							{required: field.required},
 						]
 					})(
 						renderInput(field.type)
@@ -74,26 +73,18 @@ const renderFields = (fields = [],getFieldDecorator) => {
 	})
 }
 const renderInput = (type) => {
-	console.log(type)
-	switch (type){
+	switch (type) {
 		case 'multi-line-text' :
 			return (
-				<Input.TextArea />
+				<Input.TextArea/>
 			)
 		case 'text' :
 			return (
-				<Input />
-			)
-		case 'boolean' :
-			return (
-				<RadioGroup>
-					<Radio value={true}>是</Radio>
-					<Radio value={false}>否</Radio>
-				</RadioGroup>
+				<Input/>
 			)
 		default:
 			return (
-				<Input />
+				<Input/>
 			)
 	}
 }
@@ -101,40 +92,55 @@ const renderInput = (type) => {
 const renderProperty = (type) => {
 	return renderInput(type.name)
 }
-const renderProperties  = (properties = [], getFieldDecorator) => {
+const renderProperties = (properties = [], getFieldDecorator) => {
 	return properties.map(property => {
-		return (
-			<FormItem label={property.name} {...formItemLayout} key={property.id}>
-				{getFieldDecorator(`${property.id}`,{
-					initialValue: property.value
-				},{
-					rules: [
-						{ required: property.required},
-					]
-				})(
-					renderProperty(property.type)
-				)}
-			</FormItem>
-		)
+		if(property.type.name === 'boolean'){
+			return (
+				<FormItem label={property.name} {...formItemLayout} key={property.id}>
+					{getFieldDecorator(`${property.id}`, {
+						initialValue: property.value === null ? true : property.value
+					})(
+						<Radio.Group>
+							<Radio value={true}>是</Radio>
+							<Radio value={false}>否</Radio>
+						</Radio.Group>
+					)}
+				</FormItem>
+			)
+		}else {
+			return (
+				<FormItem label={property.name} {...formItemLayout} key={property.id}>
+					{getFieldDecorator(`${property.id}`, {
+						initialValue: property.value
+					}, {
+						rules: [
+							{required: property.required},
+						]
+					})(
+						renderProperty(property.type)
+					)}
+				</FormItem>
+			)
+		}
 	})
 }
 const RenderForm = ({
-											fields,
-											formProperties,
-											submit,
-											form: {
-												getFieldDecorator,
-												validateFields
-											}
+						fields,
+						formProperties,
+						submit,
+						form: {
+							getFieldDecorator,
+							validateFields
+						}
 
-										}) => {
+					}) => {
 	console.log(formProperties)
 	const onSubmit = (e) => {
 		e.preventDefault();
 		validateFields((errors, values) => {
-			if(!errors){
-				for(let field in values){
-					if(typeof values[field] === 'object'){
+			if (!errors) {
+				for (let field in values) {
+					if (typeof values[field] === 'object' && (values[field] !== null)) {
 						values[field] = values[field].format('YYYY-MM-DD')
 					}
 				}
@@ -144,12 +150,12 @@ const RenderForm = ({
 	}
 	return (
 		<Form onSubmit={onSubmit}>
-			{renderFields(fields,getFieldDecorator)}
+			{renderFields(fields, getFieldDecorator)}
 			<Divider type="horizontal"/>
-			{renderProperties(formProperties,getFieldDecorator)}
+			{renderProperties(formProperties, getFieldDecorator)}
 			<FormItem {...tailFormItemLayout}>
 				<Button type="primary"
-								htmlType="submit"
+						htmlType="submit"
 				>提交</Button>
 			</FormItem>
 		</Form>

@@ -30,10 +30,18 @@ export async function list_one(id) {
 	})
 }
 
-export async function complete(taskId) {
-	return request(`/api/oa/act/task/${taskId}/action/complete`,{
-		method: 'put'
-	})
+export async function complete(taskId,variable) {
+	if(variable){
+		console.log(variable)
+		return request(`/api/oa/act/task/${taskId}/action/complete`,{
+			method: 'post',
+			body: variable
+		})
+	}else{
+		return request(`/api/oa/act/task/${taskId}/action/complete`,{
+			method: 'put'
+		})
+	}
 }
 
 export async function claim(taskId) {

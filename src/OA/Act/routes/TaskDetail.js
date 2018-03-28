@@ -34,9 +34,14 @@ class TaskDetail extends PureComponent{
 	getExtra = () => {
 		const {userInfo} = this.props.app;
 		if(this.state.task.assignee === userInfo.userId){
-			return(
-				<Button onClick={this.completeTask}>完成</Button>
-			)
+			if(!this.state.task.taskHasForm){
+				return(
+					<Button onClick={this.completeTask}>完成</Button>
+				)
+			}else {
+				return '';
+			}
+
 		}else {
 			return (
 				<Button onClick={this.claimTask}>签收</Button>
@@ -58,9 +63,14 @@ class TaskDetail extends PureComponent{
 			}
 		})
 	}
-	completeTask = () => {
+	completeTask = (values) => {
 		if(this.state.task.taskHasForm){
-
+			complete(this.state.task.id,values).then(({success}) => {
+				if(success){
+					message.success("任务处理完成!")
+					//this.props.history.push("../task")
+				}
+			})
 		}else{
 			complete(this.state.task.id).then(({success}) => {
 				if(success){
@@ -74,7 +84,10 @@ class TaskDetail extends PureComponent{
 		this.setState({showForm: !this.state.showForm})
 		if(!this.state.formInfo.id) {
 			getFormData(this.state.task.id).then(({data}) => {
-				this.setState({formInfo: data})
+				//this.setState({formInfo: data})
+				this.setState({
+					formInfo: data
+				})
 			})
 		}
 	}
@@ -137,7 +150,8 @@ class TaskDetail extends PureComponent{
 				<Card bordered={false}>
 					{this.state.showForm ?
 						<RenderForm fields={this.state.formInfo.fields}
-												formProperties={this.state.formInfo.formProperties}/>
+												formProperties={this.state.formInfo.formProperties}
+												submit={this.completeTask}/>
 						:
 						<Table dataSource={this.state.hisTasks}
 						       columns={columns}

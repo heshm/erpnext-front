@@ -11,8 +11,8 @@ import StartForm from './routes/StartForm';
 const Act = ({match}) => {
 	return (
 		<Switch>
-			<Route exact path={`${match.url}/model`} component={Model}/>
-			<Route exact path={`${match.url}/form`} component={FormModel}/>
+			<Route exact path={`${match.url}/processModel`} component={Model}/>
+			<Route exact path={`${match.url}/formModel`} component={FormModel}/>
 			<Route exact path={`${match.url}/process`} component={Process}/>
 			<Route exact path={`${match.url}/task`} component={Task}/>
 			<Route exact path={`${match.url}/task/:id`} component={TaskDetail}/>
