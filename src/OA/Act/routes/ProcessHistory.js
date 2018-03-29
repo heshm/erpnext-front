@@ -1,32 +1,53 @@
-import React,{PureComponent} from 'react';
-import {Form,Button,DatePicker,Card,Table} from 'antd';
+import React, {PureComponent} from 'react';
+import {Form, Button, DatePicker, Card, Table} from 'antd';
 import {pageListHis} from '../services/ProcessInst';
 import {getDate} from '../../../utils';
 
 const FormItem = Form.Item;
-class ProcessHistory extends PureComponent{
+class ProcessHistory extends PureComponent {
 	state = {
 		loading: false,
 		data: [],
 		pagination: {
-			size: 'default'
-		}
+			size: 'default',
+			current: 1
+		},
+		filter: {}
 	}
-	fetch = (pagination,filter = {}) => {
+	fetch = (pagination, filter = {}) => {
 		this.setState({loading: true});
-		pageListHis(pagination,filter).then(({data}) => {
+		pageListHis(pagination, filter).then(({data}) => {
+			const pagination = {...this.state.pagination};
+			pagination.total = data.totalElements;
+			pagination.current = data.number + 1;
 			this.setState({
 				loading: false,
-				data: data.content
+				data: data.content,
+				pagination
 			})
 		})
 	}
-	handleTableChange = (pagination, filters, sorter) => {
-		console.log(pagination)
+	handleTableChange = (pagination) => {
+		this.fetch(pagination,this.state.filter)
+	}
+	handleQuery = (e) => {
+		e.preventDefault();
+		let startDate = this.props.form.getFieldValue('startDate');
+		let endDate = this.props.form.getFieldValue('endDate');
+		let filter = {
+			startDate: startDate ? startDate.format('YYYY-MM-DD') : '',
+			endDate: endDate ? endDate.format('YYYY-MM-DD') : ''
+		}
+		this.setState({
+			filter
+		},() => {
+			this.fetch(this.state.pagination,this.state.filter)
+		})
 	}
 	componentDidMount() {
 		this.fetch(this.state.pagination);
 	}
+
 	render() {
 		const {getFieldDecorator} = this.props.form;
 		const columns = [
@@ -35,19 +56,19 @@ class ProcessHistory extends PureComponent{
 				dataIndex: 'id',
 				key: 'id',
 			}, {
-				title: '名称',
-				dataIndex: 'name',
-				key: 'name',
+				title: '流程名称',
+				dataIndex: 'processDefinitionName',
+				key: 'processDefinitionName',
 			}, {
 				title: '开始时间',
 				key: 'startTime',
-				render: (text,record) => (
+				render: (text, record) => (
 					<span>{getDate(record.startTime)}</span>
 				)
 			}, {
 				title: '结束时间',
 				key: 'endTime',
-				render: (text,record) => (
+				render: (text, record) => (
 					<span>{getDate(record.endTime)}</span>
 				)
 			}
@@ -61,12 +82,12 @@ class ProcessHistory extends PureComponent{
 						onSubmit={this.handleQuery}
 					>
 						<FormItem label="开始时间">
-							{getFieldDecorator('accountNo')(
+							{getFieldDecorator('startDate')(
 								<DatePicker/>
 							)}
 						</FormItem>
 						<FormItem label="结束时间">
-							{getFieldDecorator('name')(
+							{getFieldDecorator('endDate')(
 								<DatePicker/>
 							)}
 						</FormItem>
@@ -79,12 +100,12 @@ class ProcessHistory extends PureComponent{
 					</Form>
 				</Card>
 				<Table columns={columns}
-					   loading={this.state.loading}
-					   dataSource={this.state.data}
-					   pagination={this.state.pagination}
-					   onChange={this.handleTableChange}
-					   rowKey="id"
-					   size="middle"
+				       loading={this.state.loading}
+				       dataSource={this.state.data}
+				       pagination={this.state.pagination}
+				       onChange={this.handleTableChange}
+				       rowKey="id"
+				       size="middle"
 				/>
 			</div>
 		)

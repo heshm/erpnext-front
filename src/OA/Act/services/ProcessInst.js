@@ -1,4 +1,4 @@
-import { request } from '../../../utils';
+import { request, jsonToUrlParams } from '../../../utils';
 
 export async function list() {
 	return request('/api/oa/act/processInst/list/running',{
@@ -13,7 +13,15 @@ export async function deleteProcessInst(id) {
 }
 
 export async function pageListHis(pagination,filter) {
-	return request('/api/oa/act/processInst/pageListHis',{
+	let url = '/api/oa/act/processInst/pageListHis?';
+	let page = pagination.current - 1;
+	let params = {
+		...filter,
+		page: page
+	}
+	url += jsonToUrlParams(params);
+	console.log(url)
+	return request(url,{
 		method: 'get'
 	})
 }
