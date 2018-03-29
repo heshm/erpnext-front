@@ -11,3 +11,9 @@ export async function deleteProcessInst(id) {
 		method: 'delete'
 	})
 }
+
+export async function pageListHis(pagination,filter) {
+	return request('/api/oa/act/processInst/pageListHis',{
+		method: 'get'
+	})
+}

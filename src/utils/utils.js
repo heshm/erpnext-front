@@ -1,4 +1,5 @@
 import request from './request';
+import moment from 'moment';
 
 const storeLoginData = (data) => {
 	const {access_token, token_type, refresh_token, expires_in} = data;
@@ -41,10 +42,19 @@ const getDuration = (duration) => {
 	return result;
 }
 
+const getDate = (longTypeDate) => {
+	if(longTypeDate === null)
+		return "";
+	let date = new Date();
+	date.setTime(longTypeDate);
+	return moment(date).format("YYYY-MM-DD HH:mm:ss");
+}
+
 export {
 	storeLoginData,
 	isLogin,
 	request,
 	jsonToUrlParams,
-	getDuration
+	getDuration,
+	getDate
 };

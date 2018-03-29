@@ -7,6 +7,7 @@ import Task from './routes/Task';
 import TaskDetail from './routes/TaskDetail';
 import Processes from './routes/Processes';
 import StartForm from './routes/StartForm';
+import ProcessHistory from './routes/ProcessHistory';
 
 const Act = ({match}) => {
 	return (
@@ -18,6 +19,7 @@ const Act = ({match}) => {
 			<Route exact path={`${match.url}/task/:id`} component={TaskDetail}/>
 			<Route exact path={`${match.url}/processes`} component={Processes}/>
 			<Route exact path={`${match.url}/start-form/:processDefId`} component={StartForm}/>
+			<Route exact path={`${match.url}/process-history`} component={ProcessHistory}/>
 		</Switch>
 	)
 }
