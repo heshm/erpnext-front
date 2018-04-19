@@ -4,6 +4,7 @@ import Warehouse from './routes/Warehouse';
 import WarehouseDetail from './routes/WarehouseDetail';
 import ItemGroup from './routes/ItemGroup';
 import ItemList from './routes/ItemList';
+import Price from './routes/Price';
 
 const Param = ({match}) => {
 	return (
@@ -12,6 +13,7 @@ const Param = ({match}) => {
 			<Route path={`${match.url}/warehouse/:id`} component={WarehouseDetail}/>
 			<Route path={`${match.url}/itemGroup`} component={ItemGroup}/>
 			<Route path={`${match.url}/itemlist`} component={ItemList}/>
+			<Route path={`${match.url}/price`} component={Price}/>
 		</Switch>
 	)
 }
