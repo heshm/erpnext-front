@@ -54,7 +54,7 @@ class Price extends PureComponent{
 			title: '状态',
 			key: 'enabled',
 			render: (text,record) => (
-				record.enabled === 1 ? '有效' : '無效'
+				record.enabled === 1 ? '有效' : '无效'
 			)
 		}];
 		return (
