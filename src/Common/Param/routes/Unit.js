@@ -82,6 +82,7 @@ class Unit extends PureComponent{
 	}
 	deleteUnit = (unitId) => {
 		deleteOneUnit(unitId).then(({success}) => {
+			console.log(success)
 			if(success){
 				this.fetch();
 			}
