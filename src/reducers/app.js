@@ -11,7 +11,8 @@ const initialState = {
 	smallScreen: document.body.clientWidth < 700,
 	userInfo: {},
 	appList: [],
-	menuItem: []
+	menuItem: [],
+	isLogin: true
 };
 
 const app = (state = initialState,action) => {

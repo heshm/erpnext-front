@@ -42,7 +42,7 @@ class App extends Component {
 	    <Provider store={store}>
 		    <ConnectedRouter history={history}>
 			    <Switch>
-						<Route exact path="/login" component={Login}/>
+					<Route exact path="/login" component={Login}/>
 				    <Route path="/" render={() => (
 							isLogin() ? (
 								<Main/>

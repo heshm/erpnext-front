@@ -1,5 +1,12 @@
 import {request} from '../utils';
 
+export async function fetchIndex(){
+	const {success} = await request('/api',{
+		method: 'get'
+	});
+	return success;
+}
+
 export async function fetchUser(){
 	const {data} = await request('/api/readLoginUserInfo',{
 		method: 'get'
